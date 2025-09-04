@@ -4,6 +4,19 @@ import { Badge } from '@/components/ui/badge'
 export function AboutSection() {
   return (
     <section id="about" className="py-20 bg-muted/20">
+      {/* Full-bleed image row */}
+      <div className="w-screen relative left-1/2 -translate-x-1/2">
+        <div className="py-8 px-4 md:px-8">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+            <img src="/IMG_7578.JPG" alt="About image 1" className="w-full h-32 md:h-40 rounded-lg object-cover" />
+            <img src="/IMG_7102.JPG" alt="About image 2" className="w-full h-32 md:h-40 rounded-lg object-cover" />
+            <img src="/a866a32aa5ce75efcc58751edcd1129b.png" alt="About image 3" className="w-full h-32 md:h-40 rounded-lg object-cover" />
+            <img src="/IMG_8294%202.png" alt="About image 4" className="w-full h-32 md:h-40 rounded-lg object-cover" />
+            <img src="/IMG_8353.png" alt="About image 5" className="w-full h-32 md:h-40 rounded-lg object-cover" />
+          </div>
+        </div>
+      </div>
+
       <div className="container mx-auto px-4">
         <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
           About Me
@@ -23,7 +36,7 @@ export function AboutSection() {
               live market data streaming.
             </p>
             
-            <h3 className="text-2xl font-bold mb-6">Experience</h3>
+            <h3 className="text-2xl font-bold mb-6 mt-2">Experience</h3>
             
             <div className="space-y-6">
               <Card className="transform hover:scale-[1.02] hover:-translate-y-1 transition-all duration-300">
