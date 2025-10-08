@@ -108,7 +108,7 @@ export function ChatDialog({ children }: ChatDialogProps) {
       <DialogTrigger asChild>
         {children}
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[600px] h-[80vh] flex flex-col">
+      <DialogContent className="sm:max-w-[600px] h-[80vh] flex flex-col animate-in fade-in-0 zoom-in-95 duration-300">
         <DialogHeader>
           <DialogTitle>Chat with Max's AI Agent</DialogTitle>
         </DialogHeader>
@@ -117,18 +117,19 @@ export function ChatDialog({ children }: ChatDialogProps) {
           <ScrollArea className="flex-1 pr-4">
             <div className="space-y-4 p-4">
               {messages.length === 0 && (
-                <div className="text-center text-muted-foreground py-8">
+                <div className="text-center text-muted-foreground py-8 animate-in fade-in-0 slide-in-from-bottom-4 duration-500">
                   <p className="mb-2">👋 Hi! I'm Max's AI assistant.</p>
                   <p>Ask me anything about Max's experience, projects, or skills!</p>
                 </div>
               )}
               
-              {messages.map((message) => (
+              {messages.map((message, index) => (
                 <div
                   key={message.id}
                   className={`flex ${
                     message.role === 'user' ? 'justify-end' : 'justify-start'
-                  }`}
+                  } animate-in fade-in-0 slide-in-from-bottom-2 duration-300`}
+                  style={{ animationDelay: `${index * 100}ms` }}
                 >
                   <div
                     className={`max-w-[80%] p-3 rounded-lg ${
@@ -143,7 +144,7 @@ export function ChatDialog({ children }: ChatDialogProps) {
               ))}
               
               {isLoading && (
-                <div className="flex justify-start">
+                <div className="flex justify-start animate-in fade-in-0 slide-in-from-bottom-2 duration-300">
                   <div className="bg-muted p-3 rounded-lg">
                     <p className="text-sm">Typing...</p>
                   </div>
@@ -152,7 +153,7 @@ export function ChatDialog({ children }: ChatDialogProps) {
             </div>
           </ScrollArea>
           
-          <form onSubmit={handleSubmit} className="flex gap-2 p-4 border-t">
+          <form onSubmit={handleSubmit} className="flex gap-2 p-4 border-t animate-in fade-in-0 slide-in-from-bottom-2 duration-300">
             <Input
               value={input}
               onChange={(e) => setInput(e.target.value)}
