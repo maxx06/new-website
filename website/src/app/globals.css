@@ -126,25 +126,29 @@
   .perspective-1000 {
     perspective: 1000px;
   }
-  
+
   .preserve-3d {
     transform-style: preserve-3d;
   }
-  
+
   .rotateY-2 {
     transform: rotateY(2deg);
   }
-  
+
   .rotateY-1 {
     transform: rotateY(1deg);
   }
-  
+
   .rotateX-2 {
     transform: rotateX(2deg);
   }
-  
+
   .rotateX-1 {
     transform: rotateX(1deg);
+  }
+
+  .animate-meteor {
+    animation: meteor linear infinite;
   }
 }
 
@@ -157,5 +161,19 @@
   }
   66% {
     transform: translateY(-5px) rotate(-1deg);
+  }
+}
+
+@keyframes meteor {
+  0% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(-400px);
+    opacity: 0;
   }
 }

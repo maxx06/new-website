@@ -6,6 +6,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { FadeIn } from '@/components/magicui/fade-in'
 import { GradientText } from '@/components/magicui/gradient-text'
+import { Meteors } from '@/components/magicui/meteors'
 
 export function HeroSection() {
   const { open } = useSidebar()
@@ -42,24 +43,8 @@ export function HeroSection() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Top Navigation */}
-      <nav className="fixed top-0 w-full z-50 bg-background/80 backdrop-blur-md border-b border-white/5">
-        <div className="container mx-auto px-8 py-4 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2 text-lg font-semibold">
-            <div className="w-6 h-6 rounded-full bg-white"></div>
-            Max
-          </Link>
-          <div className="hidden md:flex items-center gap-8 text-sm">
-            <button onClick={open} className="text-muted-foreground hover:text-foreground transition-colors">Agent</button>
-          </div>
-          <Button onClick={open} variant="outline" size="sm" className="rounded-full">
-            Get AI Help
-          </Button>
-        </div>
-      </nav>
-
       {/* Hero Section */}
-      <section className="pt-32 pb-20 px-8 relative z-10">
+      <section className="pt-20 pb-20 px-8 relative z-10 overflow-hidden">
         {/* Background Image - Only for Hero */}
         <div className="absolute inset-0 z-0 w-full overflow-hidden">
           <Image
@@ -72,10 +57,14 @@ export function HeroSection() {
           />
           <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/70 to-black"></div>
         </div>
+        {/* Meteors Layer */}
+        <div className="absolute inset-0 z-[1] w-full overflow-hidden pointer-events-none">
+          <Meteors number={10} />
+        </div>
         <div className="container mx-auto max-w-4xl relative z-10">
           {/* Badge */}
           <FadeIn delay={0.1} direction="down">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs mb-8">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs mb-8 shadow-lg">
               <div className="w-1.5 h-1.5 rounded-full bg-green-500"></div>
               Full Stack Developer & AI Researcher
             </div>
@@ -83,7 +72,7 @@ export function HeroSection() {
 
           {/* Large Name */}
           <FadeIn delay={0.2} direction="up">
-            <h1 className="text-6xl md:text-8xl font-thin mb-6 tracking-tight">
+            <h1 className="text-5xl md:text-7xl font-extralight mb-6 tracking-tight" style={{ fontFamily: 'var(--font-poppins)' }}>
               <GradientText delay={0.3} className="bg-gradient-to-b from-white to-gray-500 bg-clip-text text-transparent">
                 Max Xiong
               </GradientText>
@@ -93,7 +82,7 @@ export function HeroSection() {
 
           {/* Bio */}
           <FadeIn delay={0.4} direction="up">
-            <p className="text-xl md:text-2xl text-muted-foreground mb-12 max-w-2xl leading-relaxed">
+            <p className="text-lg md:text-xl text-muted-foreground mb-12 max-w-2xl leading-relaxed font-light" style={{ fontFamily: 'var(--font-poppins)' }}>
               I'm a versatile developer specializing in AI, web, and product design to help grow your business. Let's build something great!
             </p>
           </FadeIn>
@@ -102,7 +91,7 @@ export function HeroSection() {
           <FadeIn delay={0.5} direction="up">
             <div className="flex flex-wrap gap-4 mb-16">
               <Button onClick={open} size="lg" className="rounded-full bg-white text-black hover:bg-white/90 px-8">
-                Contact Now
+                Talk to my Agent
               </Button>
               <Button asChild size="lg" variant="outline" className="rounded-full px-8">
                 <Link href="https://github.com/maxx06" target="_blank" rel="noopener noreferrer">
@@ -115,13 +104,13 @@ export function HeroSection() {
           {/* Floating badges/testimonials */}
           <FadeIn delay={0.6} direction="up">
             <div className="flex flex-wrap gap-4 text-sm">
-              <div className="px-4 py-2 rounded-full bg-white/5 border border-white/10">
+              <div className="px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 shadow-lg">
                 ✦ Working with top tech companies
               </div>
-              <div className="px-4 py-2 rounded-full bg-white/5 border border-white/10">
+              <div className="px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 shadow-lg">
                 ✦ Duke University • Microsoft AI
               </div>
-              <div className="px-4 py-2 rounded-full bg-white/5 border border-white/10">
+              <div className="px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 shadow-lg">
                 ✦ 100+ active users served
               </div>
             </div>
@@ -133,12 +122,12 @@ export function HeroSection() {
       <section className="px-8 pb-20 relative z-10">
         <div className="container mx-auto max-w-6xl">
           <FadeIn delay={0.7} direction="up">
-            <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">Featured Projects</h2>
+            <h2 className="text-4xl md:text-5xl font-light mb-12 text-center tracking-wide" style={{ fontFamily: 'var(--font-poppins)' }}>Featured Projects</h2>
           </FadeIn>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {projects.map((project, index) => (
               <FadeIn key={index} delay={0.8 + index * 0.1} direction="up">
-                <div className="group relative rounded-2xl overflow-hidden bg-white/5 border border-white/10 hover:border-white/20 transition-all duration-300 h-full flex flex-col">
+                <div className="group relative rounded-2xl overflow-hidden bg-white/10 backdrop-blur-md border border-white/20 hover:border-white/30 transition-all duration-300 h-full flex flex-col shadow-xl hover:shadow-2xl">
                   <div className="relative aspect-[4/3] overflow-hidden">
                     <Image
                       src={project.image}

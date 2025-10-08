@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { useSidebar } from '@/contexts/sidebar-context'
-import { X, MessageSquare, Minimize2 } from 'lucide-react'
+import { X, MessageSquare } from 'lucide-react'
 
 interface Message {
   id: string
@@ -18,8 +18,6 @@ export function ChatOverlay() {
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
   const [isLoading, setIsLoading] = useState(false)
-  // Start minimized so only input is visible when opened
-  const [isMinimized, setIsMinimized] = useState(true)
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
   const scrollToBottom = () => {
@@ -83,12 +81,10 @@ export function ChatOverlay() {
             try {
               const data = JSON.parse(line.slice(2))
               if (data.content) {
-                // Expand as soon as we start receiving assistant content
-                if (isMinimized) setIsMinimized(false)
                 assistantMessage.content += data.content
-                setMessages(prev => 
-                  prev.map(msg => 
-                    msg.id === assistantMessage.id 
+                setMessages(prev =>
+                  prev.map(msg =>
+                    msg.id === assistantMessage.id
                       ? { ...msg, content: assistantMessage.content }
                       : msg
                   )
@@ -108,8 +104,6 @@ export function ChatOverlay() {
         content: 'Sorry, I encountered an error. Please try again later.'
       }
       setMessages(prev => [...prev, errorMessage])
-      // Ensure the user sees the error content
-      if (isMinimized) setIsMinimized(false)
     } finally {
       setIsLoading(false)
     }
@@ -119,113 +113,103 @@ export function ChatOverlay() {
 
   return (
     <>
-      {/* Cluely-style Chat Overlay */}
+      {/* Cursor-style Side Panel */}
       <div className={`
-        fixed top-4 left-1/2 transform -translate-x-1/2 z-50
-        w-[95vw] max-w-3xl transition-all duration-300 ease-out
-        ${isMinimized 
-          ? 'h-16' 
-          : 'h-[60vh]'
-        }
+        fixed top-0 right-0 h-screen z-50
+        w-[400px] md:w-[500px] transition-all duration-500 ease-in-out
+        ${isOpen ? 'translate-x-0' : 'translate-x-full'}
       `}>
-        <div className="h-full bg-white/10 dark:bg-black/20 backdrop-blur-xl border border-white/20 dark:border-white/10 rounded-xl shadow-2xl flex flex-col overflow-hidden">
-          {/* Header: hidden while minimized to keep only the input visible */}
-          {!isMinimized && (
-            <div className="flex items-center justify-between px-4 py-3 bg-white/5 dark:bg-black/10 backdrop-blur-sm border-b border-white/10 dark:border-white/5">
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-white/20 dark:bg-white/10 backdrop-blur-sm flex items-center justify-center">
-                  <MessageSquare className="h-4 w-4 text-white" />
-                </div>
-                <div>
-                  <h2 className="font-semibold text-white text-sm">Max's AI Assistant</h2>
-                  <p className="text-xs text-white/70">Ask me anything about Max</p>
-                </div>
+        <div className="h-full bg-black/95 backdrop-blur-xl border-l border-white/10 shadow-2xl flex flex-col">
+          {/* Header */}
+          <div className="flex items-center justify-between px-6 py-4 border-b border-white/10">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center">
+                <MessageSquare className="h-4 w-4 text-white" />
               </div>
-              <div className="flex items-center gap-1">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setIsMinimized(true)}
-                  className="h-7 w-7 p-0 hover:bg-white/20 dark:hover:bg-white/10 text-white/70 hover:text-white transition-colors"
-                >
-                  <Minimize2 className="h-3.5 w-3.5" />
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={close}
-                  className="h-7 w-7 p-0 hover:bg-white/20 dark:hover:bg-white/10 text-white/70 hover:text-white transition-colors"
-                >
-                  <X className="h-3.5 w-3.5" />
-                </Button>
+              <div>
+                <h2 className="font-semibold text-white text-sm">Chat with Max's Agent</h2>
+                <p className="text-xs text-white/50">Ask me anything</p>
               </div>
             </div>
-          )}
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={close}
+              className="h-8 w-8 p-0 hover:bg-white/10 text-white/70 hover:text-white transition-colors"
+            >
+              <X className="h-4 w-4" />
+            </Button>
+          </div>
 
-          {/* Input Form: always visible so minimized state still allows typing */}
-          <div className={`p-3 ${!isMinimized ? 'border-b border-white/10 dark:border-white/5 bg-white/5 dark:bg-black/10 backdrop-blur-sm' : ''}`}>
-            <form onSubmit={handleSubmit} className="flex gap-3">
+          {/* Messages Area */}
+          <div className="flex-1 overflow-hidden">
+            <ScrollArea className="h-full">
+              <div className="p-6 space-y-4">
+                {messages.length === 0 && !isLoading && (
+                  <div className="flex flex-col items-start">
+                    <div className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center mb-3">
+                      <MessageSquare className="h-5 w-5 text-white" />
+                    </div>
+                    <p className="text-sm font-medium text-white mb-1">Hi! I'm Max's AI assistant.</p>
+                    <p className="text-sm text-white/60">Ask me about Max's experience, projects, or skills!</p>
+                  </div>
+                )}
+
+                {messages.map((message) => (
+                  <div
+                    key={message.id}
+                    className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                  >
+                    <div
+                      className={`max-w-[85%] rounded-lg px-4 py-2.5 ${
+                        message.role === 'user'
+                          ? 'bg-white text-black'
+                          : 'bg-white/10 text-white'
+                      }`}
+                    >
+                      <p className="text-sm whitespace-pre-wrap leading-relaxed">
+                        {message.content}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+
+                {isLoading && (
+                  <div className="flex justify-start">
+                    <div className="bg-white/10 rounded-lg px-4 py-2.5">
+                      <div className="flex items-center gap-1">
+                        <div className="w-2 h-2 bg-white/70 rounded-full animate-bounce" />
+                        <div className="w-2 h-2 bg-white/70 rounded-full animate-bounce" style={{animationDelay: '0.1s'}} />
+                        <div className="w-2 h-2 bg-white/70 rounded-full animate-bounce" style={{animationDelay: '0.2s'}} />
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                <div ref={messagesEndRef} />
+              </div>
+            </ScrollArea>
+          </div>
+
+          {/* Input Form */}
+          <div className="p-4 border-t border-white/10">
+            <form onSubmit={handleSubmit} className="flex gap-2">
               <Input
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder="Ask me anything about Max..."
+                placeholder="Ask me anything..."
                 disabled={isLoading}
-                className="flex-1 bg-white/10 dark:bg-black/20 border-white/20 dark:border-white/10 text-white placeholder:text-white/50 rounded-lg focus:ring-2 focus:ring-white/30 focus:border-white/30 backdrop-blur-sm"
+                className="flex-1 bg-white/10 border-white/20 text-white placeholder:text-white/40 focus:ring-1 focus:ring-white/30 focus:border-white/30"
               />
-              <Button 
-                type="submit" 
+              <Button
+                type="submit"
                 disabled={isLoading || !input.trim()}
-                size="sm"
-                className="px-4 py-2 bg-white/20 dark:bg-white/10 hover:bg-white/30 dark:hover:bg-white/20 text-white rounded-lg font-medium backdrop-blur-sm transition-all duration-200 disabled:opacity-50"
+                className="px-4 bg-white text-black hover:bg-white/90 disabled:opacity-50"
               >
                 Send
               </Button>
             </form>
           </div>
-
-          {/* Response Area: only rendered when expanded */}
-          {!isMinimized && (
-            <div className="flex-1 min-h-0">
-              {/* Scrollable content area with no chat bubble, text fills the box */}
-              <ScrollArea className="h-full">
-                <div className="p-6">
-                  {messages.length === 0 && !isLoading && (
-                    <div className="text-center">
-                      <div className="w-12 h-12 rounded-full bg-white/20 dark:bg-white/10 backdrop-blur-sm flex items-center justify-center mx-auto mb-3">
-                        <MessageSquare className="h-5 w-5 text-white" />
-                      </div>
-                      <p className="text-sm font-medium text-white mb-1">👋 Hi! I'm Max's AI assistant.</p>
-                      <p className="text-xs text-white/70">Ask me about Max's experience, projects, or skills!</p>
-                    </div>
-                  )}
-
-                  {isLoading && (
-                    <div className="pt-2">
-                      <div className="flex items-center gap-2">
-                        <div className="w-6 h-6 rounded-full bg-white/20 dark:bg-white/10 backdrop-blur-sm flex items-center justify-center flex-shrink-0">
-                          <MessageSquare className="h-3 w-3 text-white" />
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <div className="w-2 h-2 bg-white/70 rounded-full animate-bounce" />
-                          <div className="w-2 h-2 bg-white/70 rounded-full animate-bounce" style={{animationDelay: '0.1s'}} />
-                          <div className="w-2 h-2 bg-white/70 rounded-full animate-bounce" style={{animationDelay: '0.2s'}} />
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
-                  {messages.length > 0 && (
-                    <div className="pt-2">
-                      <p className="whitespace-pre-wrap leading-relaxed text-white text-sm">
-                        {messages[messages.length - 1]?.role === 'assistant' ? messages[messages.length - 1]?.content : ''}
-                      </p>
-                    </div>
-                  )}
-                  <div ref={messagesEndRef} />
-                </div>
-              </ScrollArea>
-            </div>
-          )}
         </div>
       </div>
     </>
