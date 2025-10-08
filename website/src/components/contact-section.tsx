@@ -32,48 +32,57 @@ export function ContactSection() {
   return (
     <section id="contact" className="py-20 bg-muted/20">
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
-          Let's Work Together
-        </h2>
+        {/* Simple ASCII accent */}
+        <div className="text-center mb-4">
+          <div className="text-white/10 font-mono text-xs">
+            ═══════════════════════
+          </div>
+          <h2 className="text-3xl md:text-4xl font-bold text-center my-4">
+            Let's Work Together
+          </h2>
+          <div className="text-white/10 font-mono text-xs">
+            ═══════════════════════
+          </div>
+        </div>
         
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-6xl mx-auto mt-8">
           <div>
             <h3 className="text-2xl font-semibold mb-6">Get in Touch</h3>
             <p className="text-muted-foreground mb-8">
-              I'm always interested in hearing about new opportunities and interesting projects. 
+              I'm always interested in hearing about new opportunities and interesting projects.
               Whether you have a question or just want to say hi, feel free to reach out!
             </p>
-            
+
             <div className="space-y-4">
               <div>
                 <h4 className="font-medium mb-2">Email</h4>
-                <Link 
-                  href="mailto:maxxiongnj@gmail.com" 
+                <Link
+                  href="mailto:maxxiongnj@gmail.com"
                   className="text-primary hover:underline"
                 >
                   maxxiongnj@gmail.com
                 </Link>
               </div>
-              
+
               <div>
                 <h4 className="font-medium mb-2">Links</h4>
                 <div className="flex flex-col gap-2">
-                  <Link 
-                    href="https://github.com/maxx06" 
+                  <Link
+                    href="https://github.com/maxx06"
                     target="_blank"
                     className="text-primary hover:underline"
                   >
                     GitHub
                   </Link>
-                  <Link 
-                    href="https://www.linkedin.com/in/mx6/" 
+                  <Link
+                    href="https://www.linkedin.com/in/mx6/"
                     target="_blank"
                     className="text-primary hover:underline"
                   >
                     LinkedIn
                   </Link>
-                  <Link 
-                    href="https://scholar.google.com/citations?user=8ttO0VoAAAAJ&hl=en" 
+                  <Link
+                    href="https://scholar.google.com/citations?user=8ttO0VoAAAAJ&hl=en"
                     target="_blank"
                     className="text-primary hover:underline"
                   >
@@ -83,7 +92,7 @@ export function ContactSection() {
               </div>
             </div>
           </div>
-          
+
           <Card>
             <CardHeader>
               <CardTitle>Send me a message</CardTitle>
@@ -105,7 +114,7 @@ export function ContactSection() {
                     required
                   />
                 </div>
-                
+
                 <div>
                   <label htmlFor="email" className="text-sm font-medium mb-1 block">
                     Email
@@ -119,7 +128,7 @@ export function ContactSection() {
                     required
                   />
                 </div>
-                
+
                 <div>
                   <label htmlFor="message" className="text-sm font-medium mb-1 block">
                     Message
@@ -133,7 +142,7 @@ export function ContactSection() {
                     required
                   />
                 </div>
-                
+
                 <Button type="submit" className="w-full">
                   Send Message
                 </Button>

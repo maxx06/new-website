@@ -10,7 +10,7 @@ export function Navigation() {
         <Link href="/" className="text-xl font-bold">
           Max Xiong
         </Link>
-        
+
         <div className="hidden md:flex space-x-6">
           <Link href="#about" className="hover:text-primary transition-colors">
             About
@@ -22,7 +22,7 @@ export function Navigation() {
             Contact
           </Link>
         </div>
-        
+
         <Button asChild>
           <Link href="#contact">Get in Touch</Link>
         </Button>

@@ -16,32 +16,41 @@ export function AboutSection() {
       {/* Scroll-triggered image carousel */}
       <div className="w-screen relative left-1/2 -translate-x-1/2">
         <div className="py-20 px-4 md:px-8">
-          <ScrollCarousel 
-            images={images} 
+          <ScrollCarousel
+            images={images}
             className="h-80 md:h-96"
           />
         </div>
       </div>
 
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
-          About Me
-        </h2>
+        {/* Simple ASCII accent */}
+        <div className="text-center mb-4">
+          <div className="text-white/10 font-mono text-xs">
+            ═══════════════════════
+          </div>
+          <h2 className="text-3xl md:text-4xl font-bold text-center my-4">
+            About Me
+          </h2>
+          <div className="text-white/10 font-mono text-xs">
+            ═══════════════════════
+          </div>
+        </div>
         
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 mt-8">
           <div className="lg:col-span-2">
             <p className="text-lg text-muted-foreground mb-6">
-              I'm a passionate full-stack developer specializing in AI-powered applications 
-              and real-time systems. With experience building scalable apps that serve 100+ 
+              I'm a passionate full-stack developer specializing in AI-powered applications
+              and real-time systems. With experience building scalable apps that serve 100+
               active users, I enjoy creating innovative solutions that solve real-world problems.
             </p>
-            
+
             <p className="text-lg text-muted-foreground mb-8">
-              From financial technology to AI agent systems, I've worked on diverse projects 
-              including Y Combinator hackathon submissions and production applications with 
+              From financial technology to AI agent systems, I've worked on diverse projects
+              including Y Combinator hackathon submissions and production applications with
               live market data streaming.
             </p>
-            
+
             <h3 className="text-2xl font-bold mb-6 mt-2">Experience</h3>
             
             <div className="space-y-6">
@@ -110,7 +119,7 @@ export function AboutSection() {
               <Badge>AI/ML</Badge>
             </div>
           </div>
-          
+
           <div className="space-y-6">
             <h3 className="text-2xl font-bold">Skills</h3>
             
@@ -128,7 +137,7 @@ export function AboutSection() {
                 </div>
               </CardContent>
             </Card>
-            
+
             <Card className="transform hover:scale-[1.02] hover:-translate-y-1 transition-all duration-300">
               <CardContent className="p-6">
                 <h4 className="font-semibold mb-2">Full-Stack Development</h4>
@@ -143,7 +152,7 @@ export function AboutSection() {
                 </div>
               </CardContent>
             </Card>
-            
+
             <Card className="transform hover:scale-[1.02] hover:-translate-y-1 transition-all duration-300">
               <CardContent className="p-6">
                 <h4 className="font-semibold mb-2">Data Science & ML</h4>

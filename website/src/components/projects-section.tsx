@@ -26,13 +26,22 @@ export function ProjectsSection() {
   return (
     <section id="projects" className="py-20">
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
-          Featured Projects
-        </h2>
+        {/* Simple ASCII accent */}
+        <div className="text-center mb-4">
+          <div className="text-white/10 font-mono text-xs">
+            ═══════════════════════
+          </div>
+          <h2 className="text-3xl md:text-4xl font-bold text-center my-4">
+            Featured Projects
+          </h2>
+          <div className="text-white/10 font-mono text-xs">
+            ═══════════════════════
+          </div>
+        </div>
         
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto perspective-1000">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto mt-8 perspective-1000">
           {projects.map((project, index) => (
-            <div 
+            <div
               key={index}
               className="transform hover:rotateY-2 hover:rotateX-1 transition-all duration-500 preserve-3d"
               style={{
@@ -63,7 +72,7 @@ export function ProjectsSection() {
                     </Badge>
                   ))}
                 </div>
-                
+
                 <div className="flex gap-2">
                   <Button variant="outline" size="sm" className="hover:scale-105 transition-transform duration-200" asChild>
                     <Link href={project.github} target="_blank" rel="noopener noreferrer">
