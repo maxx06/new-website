@@ -61,7 +61,7 @@ export function ChatOverlay() {
       const reader = response.body?.getReader()
       const decoder = new TextDecoder()
 
-      let assistantMessage: Message = {
+      const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
         content: ''
@@ -90,7 +90,7 @@ export function ChatOverlay() {
                   )
                 )
               }
-            } catch (e) {
+            } catch {
               // Ignore JSON parse errors for streaming chunks
             }
           }
@@ -127,7 +127,7 @@ export function ChatOverlay() {
                 <MessageSquare className="h-5 w-5 text-white" />
               </div>
               <div>
-                <h2 className="font-medium text-white text-base" style={{ fontFamily: 'var(--font-poppins)' }}>Chat with Max's Agent</h2>
+                <h2 className="font-medium text-white text-base" style={{ fontFamily: 'var(--font-poppins)' }}>Chat with Max&apos;s Agent</h2>
                 <p className="text-xs text-white/60 font-light" style={{ fontFamily: 'var(--font-poppins)' }}>Ask me anything</p>
               </div>
             </div>
@@ -150,8 +150,8 @@ export function ChatOverlay() {
                     <div className="w-12 h-12 rounded-xl bg-white/10 backdrop-blur-md flex items-center justify-center mb-4 border border-white/20">
                       <MessageSquare className="h-6 w-6 text-white" />
                     </div>
-                    <p className="text-base font-medium text-white mb-2" style={{ fontFamily: 'var(--font-poppins)' }}>Hi! I'm Max's AI assistant.</p>
-                    <p className="text-sm text-white/70 font-light" style={{ fontFamily: 'var(--font-poppins)' }}>Ask me about Max's experience, projects, or skills!</p>
+                    <p className="text-base font-medium text-white mb-2" style={{ fontFamily: 'var(--font-poppins)' }}>Hi! I&apos;m Max&apos;s AI assistant.</p>
+                    <p className="text-sm text-white/70 font-light" style={{ fontFamily: 'var(--font-poppins)' }}>Ask me about Max&apos;s experience, projects, or skills!</p>
                   </div>
                 )}
 

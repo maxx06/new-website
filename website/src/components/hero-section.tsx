@@ -82,7 +82,7 @@ export function HeroSection() {
           {/* Bio */}
           <FadeIn delay={0.4} direction="up">
             <p className="text-lg md:text-xl text-muted-foreground mb-12 max-w-2xl leading-relaxed font-light" style={{ fontFamily: 'var(--font-poppins)' }}>
-              Studying CS & Math @ Duke. Interested in everything AI, research, startups, building. Let's build something great!
+              Studying CS & Math @ Duke. Interested in everything AI, research, startups, building. Let&apos;s build something great!
             </p>
           </FadeIn>
 
