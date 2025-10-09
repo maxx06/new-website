@@ -72,18 +72,17 @@ export function HeroSection() {
 
           {/* Large Name */}
           <FadeIn delay={0.2} direction="up">
-            <h1 className="text-5xl md:text-7xl font-extralight mb-6 tracking-tight" style={{ fontFamily: 'var(--font-poppins)' }}>
+            <h1 className="text-5xl md:text-7xl font-medium mb-6 tracking-tight" style={{ fontFamily: 'var(--font-poppins)' }}>
               <GradientText delay={0.3} className="bg-gradient-to-b from-white to-gray-500 bg-clip-text text-transparent">
                 Max Xiong
               </GradientText>
-              <span className="inline-block ml-2">↗</span>
             </h1>
           </FadeIn>
 
           {/* Bio */}
           <FadeIn delay={0.4} direction="up">
             <p className="text-lg md:text-xl text-muted-foreground mb-12 max-w-2xl leading-relaxed font-light" style={{ fontFamily: 'var(--font-poppins)' }}>
-              I'm a versatile developer specializing in AI, web, and product design to help grow your business. Let's build something great!
+              Studying CS & Math @ Duke. Interested in everything AI, research, startups, building. Let's build something great!
             </p>
           </FadeIn>
 
@@ -122,12 +121,12 @@ export function HeroSection() {
       <section className="px-8 pb-20 relative z-10">
         <div className="container mx-auto max-w-6xl">
           <FadeIn delay={0.7} direction="up">
-            <h2 className="text-4xl md:text-5xl font-light mb-12 text-center tracking-wide" style={{ fontFamily: 'var(--font-poppins)' }}>Featured Projects</h2>
+            <h2 className="text-3xl md:text-4xl font-medium mb-12 text-center tracking-tight" style={{ fontFamily: 'var(--font-poppins)' }}>Featured Projects</h2>
           </FadeIn>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {projects.map((project, index) => (
               <FadeIn key={index} delay={0.8 + index * 0.1} direction="up">
-                <div className="group relative rounded-2xl overflow-hidden bg-white/10 backdrop-blur-md border border-white/20 hover:border-white/30 transition-all duration-300 h-full flex flex-col shadow-xl hover:shadow-2xl">
+                <div className="group relative rounded-2xl overflow-hidden bg-black/60 backdrop-blur-md border border-white/10 hover:border-white/20 transition-all duration-300 h-full flex flex-col shadow-xl hover:shadow-2xl">
                   <div className="relative aspect-[4/3] overflow-hidden">
                     <Image
                       src={project.image}
