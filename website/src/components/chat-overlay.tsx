@@ -119,7 +119,7 @@ export function ChatOverlay() {
         w-[400px] md:w-[500px] transition-all duration-500 ease-in-out
         ${isOpen ? 'translate-x-0' : 'translate-x-full'}
       `}>
-        <div className="h-full bg-black backdrop-blur-xl border-l border-white/10 shadow-2xl flex flex-col">
+        <div className="h-full bg-gradient-to-t from-black to-zinc-900 backdrop-blur-xl border-l border-white/10 shadow-2xl flex flex-col">
           {/* Header */}
           <div className="flex items-center justify-between px-6 py-5 border-b border-white/10">
             <div className="flex items-center gap-3">

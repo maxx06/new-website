@@ -64,7 +64,7 @@ export function HeroSection() {
         <div className="container mx-auto max-w-4xl relative z-10">
           {/* Badge */}
           <FadeIn delay={0.1} direction="down">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs mb-8 shadow-lg">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-white/10 backdrop-blur-md border border-white/20 text-xs mb-8 shadow-lg">
               <div className="w-1.5 h-1.5 rounded-full bg-green-500"></div>
               Full Stack Developer & AI Researcher
             </div>
@@ -89,10 +89,10 @@ export function HeroSection() {
           {/* Buttons */}
           <FadeIn delay={0.5} direction="up">
             <div className="flex flex-wrap gap-4 mb-16">
-              <Button onClick={open} size="lg" className="rounded-full bg-white text-black hover:bg-white/90 px-8">
+              <Button onClick={open} size="lg" className="rounded-lg bg-white text-black hover:bg-white/90 px-8">
                 Talk to my Agent
               </Button>
-              <Button asChild size="lg" variant="outline" className="rounded-full px-8">
+              <Button asChild size="lg" variant="outline" className="rounded-lg px-8">
                 <Link href="https://github.com/maxx06" target="_blank" rel="noopener noreferrer">
                   View GitHub
                 </Link>
@@ -103,13 +103,13 @@ export function HeroSection() {
           {/* Floating badges/testimonials */}
           <FadeIn delay={0.6} direction="up">
             <div className="flex flex-wrap gap-4 text-sm">
-              <div className="px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 shadow-lg">
+              <div className="px-4 py-2 rounded-lg bg-white/10 backdrop-blur-md border border-white/20 shadow-lg">
                 ✦ Working with top tech companies
               </div>
-              <div className="px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 shadow-lg">
+              <div className="px-4 py-2 rounded-lg bg-white/10 backdrop-blur-md border border-white/20 shadow-lg">
                 ✦ Duke University • Microsoft AI
               </div>
-              <div className="px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 shadow-lg">
+              <div className="px-4 py-2 rounded-lg bg-white/10 backdrop-blur-md border border-white/20 shadow-lg">
                 ✦ 100+ active users served
               </div>
             </div>
@@ -142,12 +142,12 @@ export function HeroSection() {
                     <p className="text-sm text-muted-foreground mb-4 flex-grow">{project.description}</p>
                     <div className="flex flex-wrap gap-2 mb-4">
                       {project.technologies.slice(0, 3).map((tech, techIndex) => (
-                        <span key={techIndex} className="text-xs px-2 py-1 rounded-full bg-white/10 border border-white/20">
+                        <span key={techIndex} className="text-xs px-2 py-1 rounded-md bg-white/10 border border-white/20">
                           {tech}
                         </span>
                       ))}
                       {project.technologies.length > 3 && (
-                        <span className="text-xs px-2 py-1 rounded-full bg-white/10 border border-white/20">
+                        <span className="text-xs px-2 py-1 rounded-md bg-white/10 border border-white/20">
                           +{project.technologies.length - 3}
                         </span>
                       )}
@@ -157,7 +157,7 @@ export function HeroSection() {
                         href={project.github}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-xs px-3 py-1.5 rounded-full border border-white/20 hover:bg-white/10 transition-colors"
+                        className="text-xs px-3 py-1.5 rounded-md border border-white/20 hover:bg-white/10 transition-colors"
                       >
                         GitHub
                       </Link>
@@ -166,7 +166,7 @@ export function HeroSection() {
                           href={project.demo}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-xs px-3 py-1.5 rounded-full bg-white text-black hover:bg-white/90 transition-colors"
+                          className="text-xs px-3 py-1.5 rounded-md bg-white text-black hover:bg-white/90 transition-colors"
                         >
                           Live Demo
                         </Link>

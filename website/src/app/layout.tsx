@@ -3,6 +3,7 @@ import { Inter, Space_Grotesk, Poppins } from "next/font/google";
 import "./globals.css";
 import { SidebarProvider } from "@/contexts/sidebar-context";
 import { ChatOverlay } from "@/components/chat-overlay";
+import { SmoothCursor } from "@/components/magicui/smooth-cursor";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -33,10 +34,11 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body
-        className={`${inter.variable} ${spaceGrotesk.variable} ${poppins.variable} antialiased overflow-x-hidden bg-background text-foreground`}
+        className={`${inter.variable} ${spaceGrotesk.variable} ${poppins.variable} antialiased overflow-x-hidden bg-background text-foreground cursor-none`}
         style={{ fontFamily: 'var(--font-inter)' }}
       >
         <SidebarProvider>
+          <SmoothCursor />
           {children}
           <ChatOverlay />
         </SidebarProvider>
