@@ -31,6 +31,33 @@ export function HeroSection() {
       demo: "https://demo.com"
     },
     {
+      title: "Jasma",
+      subtitle: "HackGT 12: Midnight at the Museum",
+      description: "AI-powered developer tool that captures, validates, and shares bug fixes across a collaborative knowledge base. Created a complete end-to-end system with repo snapshots, semantic retrieval using pgvector, and automated fix validation to eliminate repetitive debugging.",
+      technologies: ["FastAPI", "Next.js", "Supabase", "pgvector", "AWS EC2", "Selenium"],
+      image: "/IMG_8353.png",
+      github: "https://github.com/maxx06",
+      demo: "http://hack-gt-25.vercel.app"
+    },
+    {
+      title: "Jamfusion",
+      subtitle: "HackHarvard 2025: Compile the Decade",
+      description: "AI-powered collaborative music creation platform enabling users to explore and remix global musical traditions through an interactive flow diagram. Features LLM-powered recommendations, speech-to-graph creation, and cross-cultural fusion capabilities across 71+ global cultures.",
+      technologies: ["Next.js", "FastAPI", "React Flow", "Google Gemini", "ElevenLabs", "TailwindCSS"],
+      image: "/IMG_8353.png",
+      github: "https://github.com/maxx06/hackharvard2025",
+      demo: "https://www.kpopdemonhuzzlers.biz"
+    },
+    {
+      title: "HackDuke Portal",
+      subtitle: "Duke University's Largest Hackathon",
+      description: "Full-stack web application managing applications and registration for HackDuke, serving 500+ participants annually. Features Auth0 authentication, dynamic form system with file uploads, AWS S3 integration, and production-ready Dockerized infrastructure with comprehensive testing and monitoring.",
+      technologies: ["React", "FastAPI", "PostgreSQL", "Auth0", "AWS S3", "Docker"],
+      image: "/IMG_8353.png",
+      github: "https://github.com/hack-duke/portal.hackduke.org",
+      demo: "https://portal.hackduke.org"
+    },
+    {
       title: "Research",
       subtitle: "Academic Research Projects",
       description: "Various research projects in AI and machine learning.",
@@ -72,17 +99,16 @@ export function HeroSection() {
 
           {/* Large Name */}
           <FadeIn delay={0.2} direction="up">
-            <h1 className="text-5xl md:text-7xl font-medium mb-6 tracking-tight" style={{ fontFamily: 'var(--font-poppins)' }}>
-              <GradientText delay={0.3} className="bg-gradient-to-b from-white to-gray-500 bg-clip-text text-transparent">
-                Max Xiong
-              </GradientText>
+            <h1 className="text-5xl md:text-7xl font-bold mb-6 tracking-tight text-white" style={{ fontFamily: 'var(--font-source-code-pro)' }}>
+              max xiong
             </h1>
           </FadeIn>
 
           {/* Bio */}
           <FadeIn delay={0.4} direction="up">
-            <p className="text-lg md:text-xl text-muted-foreground mb-12 max-w-2xl leading-relaxed font-light" style={{ fontFamily: 'var(--font-poppins)' }}>
-              Studying CS & Math @ Duke. Interested in everything AI, research, startups, building. Let&apos;s build something great!
+            <p className="text-lg md:text-xl text-muted-foreground mb-12 max-w-2xl leading-relaxed font-normal" style={{ fontFamily: 'var(--font-source-code-pro)' }}>
+              current studying cs & math at duke. talk to me about everything AI, research, startups, building! <br/><br/>
+              oh, i also trained an llm to talk like me. try it out :&#41;
             </p>
           </FadeIn>
 
@@ -121,7 +147,7 @@ export function HeroSection() {
       <section className="px-8 pb-20 relative z-10">
         <div className="container mx-auto max-w-6xl">
           <FadeIn delay={0.7} direction="up">
-            <h2 className="text-3xl md:text-4xl font-medium mb-12 text-center tracking-tight" style={{ fontFamily: 'var(--font-poppins)' }}>Featured Projects</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center tracking-tight" style={{ fontFamily: 'var(--font-source-code-pro)' }}>projects</h2>
           </FadeIn>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {projects.map((project, index) => (
