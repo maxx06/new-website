@@ -24,8 +24,8 @@ export function SmoothCursor() {
       const distX = mouseX - cursorX
       const distY = mouseY - cursorY
 
-      cursorX += distX * 0.15
-      cursorY += distY * 0.15
+      cursorX += distX * 0.3
+      cursorY += distY * 0.3
 
       cursor.style.left = `${cursorX}px`
       cursor.style.top = `${cursorY}px`
