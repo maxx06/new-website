@@ -4,36 +4,31 @@ import { useEffect, useRef } from "react"
 
 export function SmoothCursor() {
   const cursorRef = useRef<HTMLDivElement>(null)
-  const cursorOutlineRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const cursor = cursorRef.current
-    const cursorOutline = cursorOutlineRef.current
 
-    if (!cursor || !cursorOutline) return
+    if (!cursor) return
 
     let mouseX = 0
     let mouseY = 0
-    let outlineX = 0
-    let outlineY = 0
+    let cursorX = 0
+    let cursorY = 0
 
     const handleMouseMove = (e: MouseEvent) => {
       mouseX = e.clientX
       mouseY = e.clientY
-
-      cursor.style.left = `${mouseX}px`
-      cursor.style.top = `${mouseY}px`
     }
 
     const animate = () => {
-      const distX = mouseX - outlineX
-      const distY = mouseY - outlineY
+      const distX = mouseX - cursorX
+      const distY = mouseY - cursorY
 
-      outlineX += distX * 0.15
-      outlineY += distY * 0.15
+      cursorX += distX * 0.15
+      cursorY += distY * 0.15
 
-      cursorOutline.style.left = `${outlineX}px`
-      cursorOutline.style.top = `${outlineY}px`
+      cursor.style.left = `${cursorX}px`
+      cursor.style.top = `${cursorY}px`
 
       requestAnimationFrame(animate)
     }
@@ -48,16 +43,15 @@ export function SmoothCursor() {
 
   return (
     <>
-      {/* Inner cursor dot */}
+      {/* Smooth cursor arrow */}
       <div
         ref={cursorRef}
-        className="pointer-events-none fixed z-[9999] h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white mix-blend-difference hidden md:block"
-      />
-      {/* Outer cursor outline */}
-      <div
-        ref={cursorOutlineRef}
-        className="pointer-events-none fixed z-[9999] h-8 w-8 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/50 mix-blend-difference hidden md:block"
-      />
+        className="pointer-events-none fixed z-[9999] -translate-x-1/2 -translate-y-1/2 hidden md:block"
+      >
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M3 3L10.07 19.97L12.58 12.58L19.97 10.07L3 3Z" fill="white" stroke="black" strokeWidth="1" strokeLinejoin="round"/>
+        </svg>
+      </div>
     </>
   )
 }

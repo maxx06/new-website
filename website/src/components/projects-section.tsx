@@ -14,7 +14,7 @@ export function ProjectsSection() {
       demo: "https://tryseekagent.com"
     },
     {
-      title: "Watson: AI Agents for Detectives",
+      title: "Watson: AI Agents for Crime Scene Investigators",
       subtitle: "Y Combinator AI Agents Hackathon",
       description: "Built an MCP server with Dedalus Labs AI to let an LLM call an external custom Python compiler agent tool for automatic graph generation with Matplotlib. Developed a FastAPI backend and Next.js frontend with Supabase integration for storing and retrieving unstructured case files.",
       technologies: ["FastAPI", "Next.js", "Supabase", "MCP", "Python", "Matplotlib"],
