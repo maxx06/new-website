@@ -28,7 +28,16 @@ export function ProjectsDisplaySection() {
                 <div className="p-6 flex flex-col flex-grow">
                   <h3 className="text-2xl font-semibold mb-2">{project.title}</h3>
                   <p className="text-sm text-primary mb-3">{project.subtitle}</p>
-                  <p className="text-sm text-muted-foreground mb-4 flex-grow">{project.description}</p>
+                  <p className="text-sm text-muted-foreground mb-4 flex-grow">
+                    {project.description.split('Winner: Best Use of Weights & Biases').map((part, i) =>
+                      i === 0 ? part : (
+                        <span key={i}>
+                          <span className="bg-yellow-300 text-black px-1 rounded">Winner: Best Use of Weights & Biases</span>
+                          {part}
+                        </span>
+                      )
+                    )}
+                  </p>
                   <div className="flex flex-wrap gap-2 mb-4">
                     {project.technologies.slice(0, 3).map((tech, techIndex) => (
                       <span key={techIndex} className="text-xs px-2 py-1 rounded-md bg-white/10 border border-white/20">
