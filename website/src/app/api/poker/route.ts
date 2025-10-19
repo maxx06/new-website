@@ -29,7 +29,13 @@ export async function GET() {
       ORDER BY date DESC
     `
 
-    return NextResponse.json(rows)
+    // Convert result from string to number
+    const entries = rows.map(row => ({
+      ...row,
+      result: parseFloat(row.result)
+    }))
+
+    return NextResponse.json(entries)
   } catch (error) {
     console.error('Error reading poker entries:', error)
     return NextResponse.json({ error: 'Failed to read entries' }, { status: 500 })
