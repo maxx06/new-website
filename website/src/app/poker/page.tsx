@@ -20,9 +20,11 @@ export default function PokerTracker() {
   const [entries, setEntries] = useState<PokerEntry[]>([])
   const [result, setResult] = useState('')
   const [notes, setNotes] = useState('')
+  const [date, setDate] = useState(new Date().toISOString().split('T')[0]) // YYYY-MM-DD format
   const [selectedPeriod, setSelectedPeriod] = useState<TimePeriod>('all')
   const [hoveredPoint, setHoveredPoint] = useState<{ x: number; y: number; pnl: number; date: string } | null>(null)
   const [isLoading, setIsLoading] = useState(true)
+  const [isLocked, setIsLocked] = useState(true)
 
   // Load entries from API on mount
   useEffect(() => {
@@ -58,21 +60,42 @@ export default function PokerTracker() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
+    if (isLocked) return // Prevent submission if locked
+
     const resultNum = parseFloat(result)
     if (isNaN(resultNum)) return
 
+    // Combine date with current time
+    const selectedDate = new Date(date)
+    const now = new Date()
+    selectedDate.setHours(now.getHours(), now.getMinutes(), now.getSeconds())
+
     const newEntry: PokerEntry = {
       id: Date.now().toString(),
-      date: new Date().toISOString(),
+      date: selectedDate.toISOString(),
       result: resultNum,
       notes: notes.trim() || undefined
     }
 
-    const updatedEntries = [newEntry, ...entries]
-    setEntries(updatedEntries)
-    await saveEntries(updatedEntries)
+    // Optimistically update UI
+    setEntries([newEntry, ...entries])
+
+    // Save to database
+    try {
+      await fetch('/api/poker', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newEntry)
+      })
+    } catch (error) {
+      console.error('Failed to save entry:', error)
+      // Revert on error
+      setEntries(entries)
+    }
+
     setResult('')
     setNotes('')
+    setDate(new Date().toISOString().split('T')[0]) // Reset to today
   }
 
   const getResultColor = (result: number) => {
@@ -385,19 +408,33 @@ export default function PokerTracker() {
                       <p className="text-sm text-muted-foreground">Add a new poker session result</p>
                     </div>
                     <form onSubmit={handleSubmit} className="space-y-4">
-                      <div className="space-y-2">
-                        <label htmlFor="result" className="text-sm font-medium">
-                          Result ($)
-                        </label>
-                        <Input
-                          id="result"
-                          type="number"
-                          step="0.01"
-                          placeholder="Enter amount (e.g., 150 or -50)"
-                          value={result}
-                          onChange={(e) => setResult(e.target.value)}
-                          required
-                        />
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <label htmlFor="date" className="text-sm font-medium">
+                            Date
+                          </label>
+                          <Input
+                            id="date"
+                            type="date"
+                            value={date}
+                            onChange={(e) => setDate(e.target.value)}
+                            required
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <label htmlFor="result" className="text-sm font-medium">
+                            Result ($)
+                          </label>
+                          <Input
+                            id="result"
+                            type="number"
+                            step="0.01"
+                            placeholder="e.g., 150 or -50"
+                            value={result}
+                            onChange={(e) => setResult(e.target.value)}
+                            required
+                          />
+                        </div>
                       </div>
                       <div className="space-y-2">
                         <label htmlFor="notes" className="text-sm font-medium">
@@ -411,7 +448,7 @@ export default function PokerTracker() {
                           onChange={(e) => setNotes(e.target.value)}
                         />
                       </div>
-                      <Button type="submit" className="w-full">
+                      <Button type="submit" className="w-full" disabled={isLocked}>
                         Add Entry
                       </Button>
                     </form>
@@ -419,6 +456,19 @@ export default function PokerTracker() {
                 </CardContent>
               </Card>
             </FadeIn>
+          </div>
+
+          {/* Lock Checkbox at Bottom */}
+          <div className="fixed bottom-4 right-4 z-50">
+            <label className="flex items-center gap-2 cursor-pointer bg-card border border-border rounded-lg px-3 py-2 shadow-lg hover:bg-accent transition-colors">
+              <input
+                type="checkbox"
+                checked={isLocked}
+                onChange={(e) => setIsLocked(e.target.checked)}
+                className="sr-only"
+              />
+              <span className="text-xl">{isLocked ? '🔒' : '🔓'}</span>
+            </label>
           </div>
 
           {/* Right Column - Session History (Scrollable) */}

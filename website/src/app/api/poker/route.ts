@@ -1,49 +1,56 @@
 import { NextResponse } from 'next/server'
-import { promises as fs } from 'fs'
-import path from 'path'
+import { sql } from '@vercel/postgres'
 
-const DATA_FILE = path.join(process.cwd(), 'data', 'poker-entries.json')
-
-// Ensure data directory exists
-async function ensureDataDir() {
-  const dataDir = path.join(process.cwd(), 'data')
+// Initialize table (runs once when needed)
+async function ensureTable() {
   try {
-    await fs.access(dataDir)
-  } catch {
-    await fs.mkdir(dataDir, { recursive: true })
+    await sql`
+      CREATE TABLE IF NOT EXISTS poker_entries (
+        id TEXT PRIMARY KEY,
+        date TIMESTAMP NOT NULL,
+        result DECIMAL(10, 2) NOT NULL,
+        notes TEXT,
+        created_at TIMESTAMP DEFAULT NOW()
+      )
+    `
+  } catch (error) {
+    console.error('Error creating table:', error)
   }
 }
 
-// GET - Read entries
+// GET - Read all entries
 export async function GET() {
   try {
-    await ensureDataDir()
+    await ensureTable()
 
-    try {
-      const data = await fs.readFile(DATA_FILE, 'utf-8')
-      const entries = JSON.parse(data)
-      return NextResponse.json(entries)
-    } catch (error) {
-      // File doesn't exist yet, return empty array
-      return NextResponse.json([])
-    }
+    const { rows } = await sql`
+      SELECT id, date, result, notes
+      FROM poker_entries
+      ORDER BY date DESC
+    `
+
+    return NextResponse.json(rows)
   } catch (error) {
     console.error('Error reading poker entries:', error)
     return NextResponse.json({ error: 'Failed to read entries' }, { status: 500 })
   }
 }
 
-// POST - Write entries
+// POST - Add a new entry
 export async function POST(request: Request) {
   try {
-    await ensureDataDir()
+    await ensureTable()
 
-    const entries = await request.json()
-    await fs.writeFile(DATA_FILE, JSON.stringify(entries, null, 2), 'utf-8')
+    const entry = await request.json()
+
+    await sql`
+      INSERT INTO poker_entries (id, date, result, notes)
+      VALUES (${entry.id}, ${entry.date}, ${entry.result}, ${entry.notes || null})
+    `
 
     return NextResponse.json({ success: true })
   } catch (error) {
-    console.error('Error writing poker entries:', error)
-    return NextResponse.json({ error: 'Failed to write entries' }, { status: 500 })
+    console.error('Error adding poker entry:', error)
+    return NextResponse.json({ error: 'Failed to add entry' }, { status: 500 })
   }
 }
