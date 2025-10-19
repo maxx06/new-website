@@ -21,23 +21,41 @@ export default function PokerTracker() {
   const [result, setResult] = useState('')
   const [notes, setNotes] = useState('')
   const [selectedPeriod, setSelectedPeriod] = useState<TimePeriod>('all')
+  const [hoveredPoint, setHoveredPoint] = useState<{ x: number; y: number; pnl: number; date: string } | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
 
-  // Load entries from localStorage on mount
+  // Load entries from API on mount
   useEffect(() => {
-    const stored = localStorage.getItem('poker-entries')
-    if (stored) {
-      setEntries(JSON.parse(stored))
+    const loadEntries = async () => {
+      try {
+        const response = await fetch('/api/poker')
+        if (response.ok) {
+          const data = await response.json()
+          setEntries(data)
+        }
+      } catch (error) {
+        console.error('Failed to load entries:', error)
+      } finally {
+        setIsLoading(false)
+      }
     }
+    loadEntries()
   }, [])
 
-  // Save entries to localStorage whenever they change
-  useEffect(() => {
-    if (entries.length > 0) {
-      localStorage.setItem('poker-entries', JSON.stringify(entries))
+  // Save entries to API whenever they change
+  const saveEntries = async (newEntries: PokerEntry[]) => {
+    try {
+      await fetch('/api/poker', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newEntries)
+      })
+    } catch (error) {
+      console.error('Failed to save entries:', error)
     }
-  }, [entries])
+  }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
     const resultNum = parseFloat(result)
@@ -50,7 +68,9 @@ export default function PokerTracker() {
       notes: notes.trim() || undefined
     }
 
-    setEntries([newEntry, ...entries])
+    const updatedEntries = [newEntry, ...entries]
+    setEntries(updatedEntries)
+    await saveEntries(updatedEntries)
     setResult('')
     setNotes('')
   }
@@ -157,38 +177,40 @@ export default function PokerTracker() {
 
   return (
     <div className="min-h-screen bg-background p-4 md:p-8">
-      <div className="max-w-4xl mx-auto space-y-6">
+      <div className="max-w-7xl mx-auto">
         <FadeIn delay={0.1} direction="down">
-          <div className="text-center">
+          <div className="text-center mb-6">
             <h1 className="text-4xl font-bold tracking-tight">max's degen tracker</h1>
           </div>
         </FadeIn>
 
-        {/* PnL Graph */}
-        <FadeIn delay={0.2} direction="up">
-          <Card>
-          <CardHeader>
-            <div className="flex items-center justify-between">
-              <div>
-                <CardTitle>Performance Chart</CardTitle>
-                <CardDescription>Cumulative profit & loss over time</CardDescription>
-              </div>
-              <div className="flex gap-1">
-                {(['week', 'month', 'year', 'all'] as TimePeriod[]).map(period => (
-                  <Button
-                    key={period}
-                    variant={selectedPeriod === period ? 'default' : 'outline'}
-                    size="sm"
-                    onClick={() => setSelectedPeriod(period)}
-                    className="text-xs capitalize"
-                  >
-                    {period === 'all' ? 'All' : period}
-                  </Button>
-                ))}
-              </div>
-            </div>
-          </CardHeader>
-          <CardContent>
+        <div className="flex flex-col lg:grid lg:grid-cols-2 gap-6 lg:h-[calc(100vh-180px)]">
+          {/* Left Column - PnL Graph and Form Combined */}
+          <div className="lg:overflow-y-auto lg:pr-3">
+            <FadeIn delay={0.2} direction="up">
+              <Card>
+                <CardHeader>
+                  <div className="flex items-center justify-between mb-4">
+                    <div>
+                      <CardTitle>Performance Chart</CardTitle>
+                      <CardDescription>Cumulative profit & loss over time</CardDescription>
+                    </div>
+                    <div className="flex gap-1">
+                      {(['week', 'month', 'year', 'all'] as TimePeriod[]).map(period => (
+                        <Button
+                          key={period}
+                          variant={selectedPeriod === period ? 'default' : 'outline'}
+                          size="sm"
+                          onClick={() => setSelectedPeriod(period)}
+                          className="text-xs capitalize"
+                        >
+                          {period === 'all' ? 'All' : period}
+                        </Button>
+                      ))}
+                    </div>
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-6">
             {chartData.length === 0 ? (
               <p className="text-center text-muted-foreground py-12">
                 No data for this period
@@ -211,10 +233,26 @@ export default function PokerTracker() {
                 </div>
 
                 <div className="relative w-full aspect-[5/2] bg-muted/20 rounded-lg overflow-hidden">
+                  {/* Tooltip */}
+                  {hoveredPoint && (
+                    <div
+                      className="absolute z-10 bg-popover border border-border rounded-lg px-3 py-2 shadow-lg pointer-events-none"
+                      style={{
+                        left: `${(hoveredPoint.x / getChartPoints().width) * 100}%`,
+                        top: `${(hoveredPoint.y / getChartPoints().height) * 100}%`,
+                        transform: 'translate(-50%, -120%)'
+                      }}
+                    >
+                      <div className="text-xs font-semibold">{formatCurrency(hoveredPoint.pnl)}</div>
+                      <div className="text-xs text-muted-foreground">{formatDate(hoveredPoint.date)}</div>
+                    </div>
+                  )}
+
                   <svg
                     viewBox={`0 0 ${getChartPoints().width} ${getChartPoints().height}`}
                     className="w-full h-full"
                     preserveAspectRatio="none"
+                    onMouseLeave={() => setHoveredPoint(null)}
                   >
                     {/* Define gradients */}
                     <defs>
@@ -295,18 +333,34 @@ export default function PokerTracker() {
                       />
                     )}
 
-                    {/* Data points */}
+                    {/* Data points with hover */}
                     {getChartPoints().points.split(' ').map((point, i) => {
                       const [x, y] = point.split(',')
                       return (
-                        <circle
-                          key={i}
-                          cx={x}
-                          cy={y}
-                          r="4"
-                          fill={periodResult >= 0 ? 'rgb(22 163 74)' : 'rgb(220 38 38)'}
-                          className="opacity-60"
-                        />
+                        <g key={i}>
+                          {/* Invisible larger circle for easier hover */}
+                          <circle
+                            cx={x}
+                            cy={y}
+                            r="15"
+                            fill="transparent"
+                            className="cursor-pointer"
+                            onMouseEnter={() => setHoveredPoint({
+                              x: parseFloat(x),
+                              y: parseFloat(y),
+                              pnl: chartData[i].pnl,
+                              date: chartData[i].date
+                            })}
+                          />
+                          {/* Visible data point */}
+                          <circle
+                            cx={x}
+                            cy={y}
+                            r="4"
+                            fill={periodResult >= 0 ? 'rgb(22 163 74)' : 'rgb(220 38 38)'}
+                            className="opacity-60 pointer-events-none"
+                          />
+                        </g>
                       )
                     })}
                   </svg>
@@ -320,61 +374,62 @@ export default function PokerTracker() {
                 </div>
               </div>
             )}
-          </CardContent>
-        </Card>
-        </FadeIn>
 
-        {/* Entry Form */}
-        <FadeIn delay={0.3} direction="up">
-          <Card>
-          <CardHeader>
-            <CardTitle>Log New Session</CardTitle>
-            <CardDescription>Add a new poker session result</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="space-y-2">
-                <label htmlFor="result" className="text-sm font-medium">
-                  Result ($)
-                </label>
-                <Input
-                  id="result"
-                  type="number"
-                  step="0.01"
-                  placeholder="Enter amount (e.g., 150 or -50)"
-                  value={result}
-                  onChange={(e) => setResult(e.target.value)}
-                  required
-                />
-              </div>
-              <div className="space-y-2">
-                <label htmlFor="notes" className="text-sm font-medium">
-                  Notes (optional)
-                </label>
-                <Input
-                  id="notes"
-                  type="text"
-                  placeholder="Any notes about the session..."
-                  value={notes}
-                  onChange={(e) => setNotes(e.target.value)}
-                />
-              </div>
-              <Button type="submit" className="w-full">
-                Add Entry
-              </Button>
-            </form>
-          </CardContent>
-        </Card>
-        </FadeIn>
+                  {/* Divider */}
+                  <div className="border-t border-border my-6"></div>
 
-        {/* Entries List */}
-        <FadeIn delay={0.4} direction="up">
-          <Card>
-          <CardHeader>
-            <CardTitle>Session History</CardTitle>
-            <CardDescription>Your recent poker sessions</CardDescription>
-          </CardHeader>
-          <CardContent>
+                  {/* Log New Session Form */}
+                  <div className="space-y-4">
+                    <div>
+                      <h3 className="text-lg font-semibold">Log New Session</h3>
+                      <p className="text-sm text-muted-foreground">Add a new poker session result</p>
+                    </div>
+                    <form onSubmit={handleSubmit} className="space-y-4">
+                      <div className="space-y-2">
+                        <label htmlFor="result" className="text-sm font-medium">
+                          Result ($)
+                        </label>
+                        <Input
+                          id="result"
+                          type="number"
+                          step="0.01"
+                          placeholder="Enter amount (e.g., 150 or -50)"
+                          value={result}
+                          onChange={(e) => setResult(e.target.value)}
+                          required
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <label htmlFor="notes" className="text-sm font-medium">
+                          Notes (optional)
+                        </label>
+                        <Input
+                          id="notes"
+                          type="text"
+                          placeholder="Any notes about the session..."
+                          value={notes}
+                          onChange={(e) => setNotes(e.target.value)}
+                        />
+                      </div>
+                      <Button type="submit" className="w-full">
+                        Add Entry
+                      </Button>
+                    </form>
+                  </div>
+                </CardContent>
+              </Card>
+            </FadeIn>
+          </div>
+
+          {/* Right Column - Session History (Scrollable) */}
+          <div className="lg:overflow-y-auto lg:pl-3">
+            <FadeIn delay={0.3} direction="up">
+              <Card className="lg:h-full">
+                <CardHeader>
+                  <CardTitle>Session History</CardTitle>
+                  <CardDescription>Your recent poker sessions</CardDescription>
+                </CardHeader>
+                <CardContent>
             {entries.length === 0 ? (
               <p className="text-center text-muted-foreground py-8">
                 No sessions recorded yet. Add your first entry above!
@@ -399,7 +454,7 @@ export default function PokerTracker() {
 
                         <div className="h-8 w-px bg-current opacity-10" />
 
-                        <div className="font-bold text-xl tracking-tight">
+                        <div className="font-light text-base tracking-tight">
                           {formatCurrency(entry.result)}
                         </div>
                       </div>
@@ -414,8 +469,11 @@ export default function PokerTracker() {
                 ))}
               </div>
             )}
-          </CardContent>
-        </Card>
+                </CardContent>
+              </Card>
+            </FadeIn>
+          </div>
+        </div>
       </div>
     </div>
   )
