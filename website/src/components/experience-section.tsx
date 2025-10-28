@@ -64,6 +64,20 @@ export function ExperienceSection() {
             <div className="p-6 rounded-2xl bg-black/60 backdrop-blur-md border border-white/10 hover:border-white/20 transition-all duration-300 shadow-xl hover:shadow-2xl">
               <div className="flex items-center gap-4 mb-3">
                 <div className="w-12 h-12 relative flex-shrink-0">
+                  <Image src="/icon.png" alt="Stealth Startup" fill className="object-contain" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-semibold">Founding Engineer #4</h3>
+                  <p className="text-sm text-primary">-</p>
+                </div>
+              </div>
+              <p className="text-sm text-muted-foreground">Founders Fund, 10M+ ARR</p>
+            </div>
+          </ScrollReveal>
+          <ScrollReveal animation="slideInRight" delay={250}>
+            <div className="p-6 rounded-2xl bg-black/60 backdrop-blur-md border border-white/10 hover:border-white/20 transition-all duration-300 shadow-xl hover:shadow-2xl">
+              <div className="flex items-center gap-4 mb-3">
+                <div className="w-12 h-12 relative flex-shrink-0">
                   <Image src="/microsoft.png" alt="Microsoft" fill className="object-contain" />
                 </div>
                 <div>
@@ -74,7 +88,7 @@ export function ExperienceSection() {
               <p className="text-sm text-muted-foreground">RL + SFT for reasoning LLMs over detection of AI-generated text. Currently achieving SOTA performances, publishing paper this January.</p>
             </div>
           </ScrollReveal>
-          <ScrollReveal animation="slideInRight" delay={250}>
+          <ScrollReveal animation="slideInLeft" delay={300}>
             <div className="p-6 rounded-2xl bg-black/60 backdrop-blur-md border border-white/10 hover:border-white/20 transition-all duration-300 shadow-xl hover:shadow-2xl">
               <div className="flex items-center gap-4 mb-3">
                 <div className="w-12 h-12 relative flex-shrink-0">
@@ -95,25 +109,11 @@ export function ExperienceSection() {
                   <Image src="/duke.png" alt="Duke University" fill className="object-contain" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold">Teaching Assistant</h3>
-                  <p className="text-sm text-primary">Duke University - Data Structures & Algorithms</p>
+                  <h3 className="text-xl font-semibold">Research & Teaching</h3>
+                  <p className="text-sm text-primary">Duke University</p>
                 </div>
               </div>
-              <p className="text-sm text-muted-foreground">Supporting students in mastering fundamental computer science concepts and problem-solving skills.</p>
-            </div>
-          </ScrollReveal>
-          <ScrollReveal animation="slideInRight" delay={350}>
-            <div className="p-6 rounded-2xl bg-black/60 backdrop-blur-md border border-white/10 hover:border-white/20 transition-all duration-300 shadow-xl hover:shadow-2xl">
-              <div className="flex items-center gap-4 mb-3">
-                <div className="w-12 h-12 relative flex-shrink-0">
-                  <Image src="/duke.png" alt="Duke University" fill className="object-contain" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-semibold">Researcher</h3>
-                  <p className="text-sm text-primary">Duke University - Shuyan Zhou Lab & SEEDS Lab</p>
-                </div>
-              </div>
-              <p className="text-sm text-muted-foreground">Did research in ML for Ecology, now doing research in AI Agents and Reasoning</p>
+              <p className="text-sm text-muted-foreground">Research in ML for Ecology, AI Agents, and Reasoning. TA for Data Structures & Algorithms.</p>
             </div>
           </ScrollReveal>
           <ScrollReveal animation="slideInLeft" delay={400}>
