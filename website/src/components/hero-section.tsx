@@ -8,6 +8,7 @@ import { FadeIn } from '@/components/magicui/fade-in'
 import { Meteors } from '@/components/magicui/meteors'
 import { ExperienceSection } from '@/components/experience-section'
 import { ProjectsDisplaySection } from '@/components/projects-display-section'
+import { FriendsSection } from '@/components/friends-section'
 
 export function HeroSection() {
   const { open } = useSidebar()
@@ -160,6 +161,9 @@ export function HeroSection() {
 
       {/* Project Previews */}
       <ProjectsDisplaySection />
+
+      {/* Friends Links */}
+      <FriendsSection />
     </div>
   )
 }
