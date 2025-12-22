@@ -160,7 +160,9 @@ export function HeroSection() {
       <ExperienceSection />
 
       {/* Project Previews */}
-      <ProjectsDisplaySection />
+      <div className="mt-16 md:mt-20">
+        <ProjectsDisplaySection />
+      </div>
 
       {/* Friends Links */}
       <FriendsSection />

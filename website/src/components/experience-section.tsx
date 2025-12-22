@@ -59,10 +59,9 @@ export function ExperienceSection() {
 
   // Smooth entry/exit of the whole sticky scene so the section doesn't feel abrupt.
   const enterOpacity = useTransform(smoothProgress, [0, 0.06], [0, 1]);
-  const exitOpacity = useTransform(smoothProgress, [0.94, 1], [1, 0]);
-  const sceneOpacity = useTransform([enterOpacity, exitOpacity], ([a, b]) => a * b);
-  const sceneY = useTransform(smoothProgress, [0, 0.06, 0.94, 1], [18, 0, 0, -18]);
-  const sceneScale = useTransform(smoothProgress, [0, 0.06, 0.94, 1], [0.985, 1, 1, 0.985]);
+  const sceneOpacity = enterOpacity;
+  const sceneY = useTransform(smoothProgress, [0, 0.06], [18, 0]);
+  const sceneScale = useTransform(smoothProgress, [0, 0.06], [0.985, 1]);
 
   return (
     <>
