@@ -44,6 +44,23 @@ const experiences = [
   }
 ];
 
+const techIcons = [
+  { src: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg", alt: "Python" },
+  { src: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg", alt: "TypeScript" },
+  { src: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg", alt: "JavaScript" },
+  { src: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg", alt: "React" },
+  { src: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg", alt: "Next.js"},
+  { src: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg", alt: "Node.js" },
+  { src: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/fastapi/fastapi-original.svg", alt: "FastAPI" },
+  { src: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg", alt: "PostgreSQL" },
+  { src: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg", alt: "MongoDB" },
+  { src: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg", alt: "Docker" },
+  { src: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg", alt: "Git" },
+  { src: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original-wordmark.svg", alt: "AWS" },
+  { src: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tensorflow/tensorflow-original.svg", alt: "TensorFlow" },
+  { src: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/pytorch/pytorch-original.svg", alt: "PyTorch" },
+];
+
 export function ExperienceSection() {
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
@@ -63,6 +80,10 @@ export function ExperienceSection() {
   const sceneY = useTransform(smoothProgress, [0, 0.06], [18, 0]);
   const sceneScale = useTransform(smoothProgress, [0, 0.06], [0.985, 1]);
 
+  // Tech bar drops down as the user enters the scrolling component.
+  const techBarY = useTransform(smoothProgress, [0, 0.06], [-70, 0]);
+  const techBarOpacity = useTransform(smoothProgress, [0, 0.03], [0, 1]);
+
   return (
     <>
       {/* Mobile: normal vertical scroll */}
@@ -77,6 +98,29 @@ export function ExperienceSection() {
         >
           experience
         </motion.h2>
+
+        <motion.div
+          initial={{ y: -16, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          className="sticky top-4 z-30"
+        >
+          <div className="rounded-2xl border border-white/10 bg-black/60 backdrop-blur-xl shadow-2xl px-4 py-3">
+            <div className="flex items-center gap-3 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+              {techIcons.map((icon) => (
+                <div key={icon.alt} className="relative h-7 w-7 flex-shrink-0 opacity-80">
+                  <Image
+                    src={icon.src}
+                    alt={icon.alt}
+                    fill
+                    className={`object-contain ${icon.invert ? 'brightness-0 invert' : ''}`}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        </motion.div>
 
         <div className="space-y-6">
           {experiences.map((exp, i) => (
@@ -141,6 +185,31 @@ export function ExperienceSection() {
       {/* Desktop: sticky sliding strip */}
       <section ref={containerRef} className="relative hidden md:block h-[700vh] bg-black px-6 md:px-10">
         <div className="sticky top-0 h-screen w-full overflow-hidden">
+          <motion.div
+            style={{ y: techBarY, opacity: techBarOpacity }}
+            className="absolute left-0 right-0 top-4 z-30"
+          >
+            <div className="rounded-2xl border border-white/10 bg-black/60 backdrop-blur-xl shadow-2xl px-5 py-3">
+              <div className="flex items-center justify-between gap-6">
+                <p className="text-xs font-mono tracking-widest text-white/60 whitespace-nowrap">
+                  TECH // STACK
+                </p>
+                <div className="flex items-center gap-3 overflow-hidden">
+                  {techIcons.map((icon) => (
+                    <div key={icon.alt} className="relative h-7 w-7 flex-shrink-0 opacity-80 hover:opacity-100 transition-opacity">
+                      <Image
+                        src={icon.src}
+                        alt={icon.alt}
+                        fill
+                        className={`object-contain ${icon.invert ? 'brightness-0 invert' : ''}`}
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
           <motion.div
             style={{ opacity: sceneOpacity, y: sceneY, scale: sceneScale }}
             className="relative h-full w-full"
