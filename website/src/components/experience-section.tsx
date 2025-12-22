@@ -1,151 +1,187 @@
 "use client"
 
 import Image from 'next/image'
-import { ScrollReveal } from '@/components/magicui/scroll-reveal'
+import { motion, useScroll, useTransform, useSpring } from 'framer-motion'
+import { useRef } from 'react'
+
+const experiences = [
+  {
+    title: "Engineer",
+    company: "Kalshi",
+    image: "/kalshi.png",
+    description: "Building features for the world's first regulated prediction market exchange.",
+  },
+  {
+    title: "Founding Engineer #4",
+    company: "icon.com",
+    image: "/icon.png",
+    description: "Founders Fund, 10M+ ARR",
+  },
+  {
+    title: "Research Intern",
+    company: "Microsoft AI",
+    image: "/microsoft.png",
+    description: "RL + SFT for reasoning LLMs over detection of AI-generated text. Currently achieving SOTA performances, publishing paper this January.",
+  },
+  {
+    title: "Organizer",
+    company: "HackDuke",
+    image: "/hackduke_logo.jpeg",
+    description: "Organizing Duke University's largest hackathon, managing logistics and operations for 500+ participants annually.",
+    roundedLogo: true
+  },
+  {
+    title: "Research & Teaching",
+    company: "Duke University",
+    image: "/duke.png",
+    description: "Research in ML for Ecology, AI Agents, and Reasoning. TA for Data Structures & Algorithms.",
+  },
+  {
+    title: "Research",
+    company: "Rutgers University",
+    image: "/rutgers.png",
+    description: "Contributing to research initiatives in recommender systems and ML.",
+  }
+];
 
 export function ExperienceSection() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"]
+  });
+
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 110,
+    damping: 26,
+    restDelta: 0.0001
+  });
+
   return (
-    <section className="px-8 pb-20 relative z-10">
-      <div className="container mx-auto max-w-6xl">
-        <ScrollReveal animation="slideUp">
-          <h2 className="text-3xl md:text-4xl font-bold mb-8 text-center tracking-tight" style={{ fontFamily: 'var(--font-source-code-pro)' }}>experience</h2>
-        </ScrollReveal>
-
-        {/* Tech Stack Icons */}
-        <ScrollReveal animation="slideUp" delay={100}>
-          <div className="flex flex-wrap items-center justify-center gap-6 mb-12 px-4">
-            <div className="w-10 h-10 relative opacity-70 hover:opacity-100 transition-opacity">
-              <Image src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="Python" fill className="object-contain" />
-            </div>
-            <div className="w-10 h-10 relative opacity-70 hover:opacity-100 transition-opacity">
-              <Image src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" alt="TypeScript" fill className="object-contain" />
-            </div>
-            <div className="w-10 h-10 relative opacity-70 hover:opacity-100 transition-opacity">
-              <Image src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JavaScript" fill className="object-contain" />
-            </div>
-            <div className="w-10 h-10 relative opacity-70 hover:opacity-100 transition-opacity">
-              <Image src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" alt="React" fill className="object-contain" />
-            </div>
-            <div className="w-10 h-10 relative opacity-70 hover:opacity-100 transition-opacity">
-              <Image src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg" alt="Next.js" fill className="object-contain brightness-0 invert" />
-            </div>
-            <div className="w-10 h-10 relative opacity-70 hover:opacity-100 transition-opacity">
-              <Image src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" alt="Node.js" fill className="object-contain" />
-            </div>
-            <div className="w-10 h-10 relative opacity-70 hover:opacity-100 transition-opacity">
-              <Image src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/fastapi/fastapi-original.svg" alt="FastAPI" fill className="object-contain" />
-            </div>
-            <div className="w-10 h-10 relative opacity-70 hover:opacity-100 transition-opacity">
-              <Image src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg" alt="PostgreSQL" fill className="object-contain" />
-            </div>
-            <div className="w-10 h-10 relative opacity-70 hover:opacity-100 transition-opacity">
-              <Image src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg" alt="MongoDB" fill className="object-contain" />
-            </div>
-            <div className="w-10 h-10 relative opacity-70 hover:opacity-100 transition-opacity">
-              <Image src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg" alt="Docker" fill className="object-contain" />
-            </div>
-            <div className="w-10 h-10 relative opacity-70 hover:opacity-100 transition-opacity">
-              <Image src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" alt="Git" fill className="object-contain" />
-            </div>
-            <div className="w-10 h-10 relative opacity-70 hover:opacity-100 transition-opacity">
-              <Image src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original-wordmark.svg" alt="AWS" fill className="object-contain" />
-            </div>
-            <div className="w-10 h-10 relative opacity-70 hover:opacity-100 transition-opacity">
-              <Image src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tensorflow/tensorflow-original.svg" alt="TensorFlow" fill className="object-contain" />
-            </div>
-            <div className="w-10 h-10 relative opacity-70 hover:opacity-100 transition-opacity">
-              <Image src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/pytorch/pytorch-original.svg" alt="PyTorch" fill className="object-contain" />
-            </div>
-          </div>
-        </ScrollReveal>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-20">
-          <ScrollReveal animation="slideInLeft" delay={200}>
-            <div className="p-6 rounded-2xl bg-black/60 backdrop-blur-md border border-white/10 hover:border-white/20 transition-all duration-300 shadow-xl hover:shadow-2xl">
-              <div className="flex items-center gap-4 mb-3">
-                <div className="w-12 h-12 relative flex-shrink-0">
-                  <Image src="/kalshi.png" alt="Kalshi" fill className="object-contain" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-semibold">Engineer</h3>
-                  <p className="text-sm text-primary">Kalshi</p>
-                </div>
-              </div>
-              <p className="text-sm text-muted-foreground">Building features for the world&apos;s first regulated prediction market exchange.</p>
-            </div>
-          </ScrollReveal>
-          <ScrollReveal animation="slideInRight" delay={250}>
-            <div className="p-6 rounded-2xl bg-black/60 backdrop-blur-md border border-white/10 hover:border-white/20 transition-all duration-300 shadow-xl hover:shadow-2xl">
-              <div className="flex items-center gap-4 mb-3">
-                <div className="w-12 h-12 relative flex-shrink-0">
-                  <Image src="/icon.png" alt="Stealth Startup" fill className="object-contain" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-semibold">Founding Engineer #4</h3>
-                  <p className="text-sm text-primary">icon.com</p>
-                </div>
-              </div>
-              <p className="text-sm text-muted-foreground">Founders Fund, 10M+ ARR</p>
-            </div>
-          </ScrollReveal>
-          <ScrollReveal animation="slideInLeft" delay={300}>
-            <div className="p-6 rounded-2xl bg-black/60 backdrop-blur-md border border-white/10 hover:border-white/20 transition-all duration-300 shadow-xl hover:shadow-2xl">
-              <div className="flex items-center gap-4 mb-3">
-                <div className="w-12 h-12 relative flex-shrink-0">
-                  <Image src="/microsoft.png" alt="Microsoft" fill className="object-contain" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-semibold">Research Intern</h3>
-                  <p className="text-sm text-primary">Microsoft AI</p>
-                </div>
-              </div>
-              <p className="text-sm text-muted-foreground">RL + SFT for reasoning LLMs over detection of AI-generated text. Currently achieving SOTA performances, publishing paper this January.</p>
-            </div>
-          </ScrollReveal>
-          <ScrollReveal animation="slideInLeft" delay={300}>
-            <div className="p-6 rounded-2xl bg-black/60 backdrop-blur-md border border-white/10 hover:border-white/20 transition-all duration-300 shadow-xl hover:shadow-2xl">
-              <div className="flex items-center gap-4 mb-3">
-                <div className="w-12 h-12 relative flex-shrink-0">
-                  <Image src="/hackduke_logo.jpeg" alt="HackDuke" fill className="object-contain rounded-md" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-semibold">Organizer</h3>
-                  <p className="text-sm text-primary">HackDuke</p>
-                </div>
-              </div>
-              <p className="text-sm text-muted-foreground">Organizing Duke University&apos;s largest hackathon, managing logistics and operations for 500+ participants annually.</p>
-            </div>
-          </ScrollReveal>
-          <ScrollReveal animation="slideInLeft" delay={300}>
-            <div className="p-6 rounded-2xl bg-black/60 backdrop-blur-md border border-white/10 hover:border-white/20 transition-all duration-300 shadow-xl hover:shadow-2xl">
-              <div className="flex items-center gap-4 mb-3">
-                <div className="w-12 h-12 relative flex-shrink-0">
-                  <Image src="/duke.png" alt="Duke University" fill className="object-contain" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-semibold">Research & Teaching</h3>
-                  <p className="text-sm text-primary">Duke University</p>
-                </div>
-              </div>
-              <p className="text-sm text-muted-foreground">Research in ML for Ecology, AI Agents, and Reasoning. TA for Data Structures & Algorithms.</p>
-            </div>
-          </ScrollReveal>
-          <ScrollReveal animation="slideInLeft" delay={400}>
-            <div className="p-6 rounded-2xl bg-black/60 backdrop-blur-md border border-white/10 hover:border-white/20 transition-all duration-300 shadow-xl hover:shadow-2xl">
-              <div className="flex items-center gap-4 mb-3">
-                <div className="w-12 h-12 relative flex-shrink-0">
-                  <Image src="/rutgers.png" alt="Rutgers University" fill className="object-contain" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-semibold">Researcher</h3>
-                  <p className="text-sm text-primary">Rutgers University</p>
-                </div>
-              </div>
-              <p className="text-sm text-muted-foreground">Contributing to research initiatives in recommender systems and ML.</p>
-            </div>
-          </ScrollReveal>
-        </div>
+    <section ref={containerRef} className="relative h-[700vh] bg-black">
+      <div className="sticky top-0 h-screen w-full flex overflow-hidden">
+        {experiences.map((exp, i) => (
+          <Card 
+            key={i} 
+            exp={exp} 
+            index={i} 
+            total={experiences.length} 
+            scrollYProgress={smoothProgress} 
+          />
+        ))}
       </div>
     </section>
+  )
+}
+
+interface ExperienceCardProps {
+  exp: typeof experiences[0] & { roundedLogo?: boolean };
+  index: number;
+  total: number;
+  scrollYProgress: any;
+}
+
+function Card({ exp, index, total, scrollYProgress }: ExperienceCardProps) {
+  const widthVw = 100 / total;
+  const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
+  const smoothstep = (t: number) => t * t * (3 - 2 * t);
+
+  // Treat the cards as a growing horizontal strip that stays centered while it grows:
+  // - At start: stripCount = 1 (only Kalshi), centered.
+  // - As you scroll: stripCount increases towards `total`, and the strip shifts left to stay centered.
+  // This naturally makes Kalshi slide left "one slot" each time a new card joins the strip.
+  const revealEnd = 0.6; // faster reveal; leaves tail scroll after fully revealed
+  const stripCount = useTransform(scrollYProgress, (p) => {
+    const t = clamp01(p / revealEnd);
+    return 1 + (total - 1) * t;
+  });
+
+  // Left edge (in vw) of the centered strip
+  const stripLeft = useTransform(stripCount, (c) => 50 - (c * widthVw) / 2);
+
+  // Where this card should end up at the current strip size
+  const targetXNum = useTransform(stripLeft, (left) => left + index * widthVw);
+  const prevXNum = useTransform(stripLeft, (left) => left + Math.max(0, index - 1) * widthVw);
+
+  // Each non-zero index card reveals when stripCount crosses its index.
+  const localReveal = useTransform(stripCount, (c) => clamp01(c - index));
+  const easedReveal = useTransform(localReveal, (t) => smoothstep(t));
+  const cardOpacity = useTransform(localReveal, [0, 0.02, 1], [0, 1, 1]);
+
+  // Slide in from *under the previous card* (same x as previous, lower z-index),
+  // then peel to the right into its own slot.
+  // Use vw math so landing is exact and Kalshi keeps shifting as the strip grows.
+  const x = useTransform([easedReveal, prevXNum, targetXNum], ([e, px, tx]) => {
+    const xVw = px * (1 - e) + tx * e;
+    return `${xVw}vw`;
+  });
+
+  // Kalshi always participates in the strip centering (it’s card 0).
+  const kalshiX = useTransform(stripLeft, (left) => `${left}vw`);
+
+  return (
+    <motion.div 
+      style={{ 
+        position: 'absolute',
+        top: 0,
+        bottom: 0,
+        left: 0,
+        width: `${widthVw}vw`,
+        x: index === 0 ? kalshiX : x,
+        opacity: index === 0 ? 1 : cardOpacity,
+        zIndex: total - index,
+      }}
+      aria-hidden={index === 0 ? undefined : true}
+      className={`h-full border-r border-white/5 last:border-r-0 overflow-hidden ${index === 0 ? '' : 'pointer-events-none'}`}
+    >
+      <div className="h-full w-full bg-[#050505] flex flex-col relative overflow-hidden group">
+        {/* Top Image Section - 50% height */}
+        <div className="relative h-[50%] w-full overflow-hidden flex-shrink-0">
+          <Image
+            src={exp.image}
+            alt={exp.company}
+            fill
+            className="object-cover opacity-20 group-hover:opacity-40 transition-opacity duration-1000"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/40 to-transparent z-10" />
+          
+          <div className="absolute bottom-8 left-6 right-6 z-20 flex flex-col items-start gap-3">
+            <div className="w-12 h-12 relative bg-black/40 backdrop-blur-md rounded-xl border border-white/10 p-2 shadow-2xl transition-all duration-700 group-hover:scale-110 group-hover:border-primary/50">
+              <Image 
+                src={exp.image} 
+                alt={exp.company} 
+                fill 
+                className={`object-contain p-1.5 ${exp.roundedLogo ? 'rounded-md' : ''}`} 
+              />
+            </div>
+            <div className="w-full">
+              <p className="text-primary font-bold text-[8px] uppercase tracking-[0.3em] mb-1 opacity-50">Experience 0{index + 1}</p>
+              <h3 className="text-base md:text-lg lg:text-xl font-bold text-white tracking-tighter leading-tight group-hover:text-primary transition-colors duration-700 break-words">
+                {exp.company}
+              </h3>
+            </div>
+          </div>
+        </div>
+
+        {/* Content Section */}
+        <div className="flex-grow p-5 md:p-6 lg:p-8 flex flex-col z-20">
+          <div className="mb-4">
+            <h4 className="text-sm md:text-base font-bold text-white/90 mb-1 leading-tight">{exp.title}</h4>
+            <div className="w-6 h-0.5 bg-primary/30 rounded-full group-hover:w-10 group-hover:bg-primary transition-all duration-700" />
+          </div>
+          
+          <div className="flex-grow overflow-hidden">
+            <p className="text-muted-foreground text-[10px] md:text-[11px] lg:text-xs leading-relaxed font-light line-clamp-[10] md:line-clamp-none">
+              {exp.description}
+            </p>
+          </div>
+
+          <div className="mt-auto pt-4 flex items-center justify-between border-t border-white/5 opacity-20 group-hover:opacity-100 transition-opacity duration-700">
+            <span className="text-[7px] font-mono tracking-widest text-primary uppercase">MEMBER // 0{index + 1}</span>
+            <div className="w-1 h-1 rounded-full bg-primary/50 group-hover:bg-primary transition-all" />
+          </div>
+        </div>
+      </div>
+    </motion.div>
   )
 }
