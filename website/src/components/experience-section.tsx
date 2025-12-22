@@ -57,10 +57,20 @@ export function ExperienceSection() {
     restDelta: 0.0001
   });
 
+  // Smooth entry/exit of the whole sticky scene so the section doesn't feel abrupt.
+  const enterOpacity = useTransform(smoothProgress, [0, 0.06], [0, 1]);
+  const exitOpacity = useTransform(smoothProgress, [0.94, 1], [1, 0]);
+  const sceneOpacity = useTransform([enterOpacity, exitOpacity], ([a, b]) => a * b);
+  const sceneY = useTransform(smoothProgress, [0, 0.06, 0.94, 1], [18, 0, 0, -18]);
+  const sceneScale = useTransform(smoothProgress, [0, 0.06, 0.94, 1], [0.985, 1, 1, 0.985]);
+
   return (
     <section ref={containerRef} className="relative h-[700vh] bg-black px-6 md:px-10">
       <div className="sticky top-0 h-screen w-full overflow-hidden">
-        <div className="relative h-full w-full">
+        <motion.div
+          style={{ opacity: sceneOpacity, y: sceneY, scale: sceneScale }}
+          className="relative h-full w-full"
+        >
           {experiences.map((exp, i) => (
             <Card 
               key={i} 
@@ -70,7 +80,7 @@ export function ExperienceSection() {
               scrollYProgress={smoothProgress} 
             />
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   )

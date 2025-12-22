@@ -7,8 +7,8 @@ import { projects } from '@/data/projects'
 
 export function ProjectsDisplaySection() {
   return (
-    <section className="px-8 pb-20 relative z-10">
-      <div className="container mx-auto max-w-6xl">
+    <section className="px-6 md:px-10 pb-20 relative z-10">
+      <div className="w-full">
         <ScrollReveal animation="slideUp">
           <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center tracking-tight" style={{ fontFamily: 'var(--font-source-code-pro)' }}>projects</h2>
         </ScrollReveal>
