@@ -65,24 +65,100 @@ export function ExperienceSection() {
   const sceneScale = useTransform(smoothProgress, [0, 0.06, 0.94, 1], [0.985, 1, 1, 0.985]);
 
   return (
-    <section ref={containerRef} className="relative h-[700vh] bg-black px-6 md:px-10">
-      <div className="sticky top-0 h-screen w-full overflow-hidden">
-        <motion.div
-          style={{ opacity: sceneOpacity, y: sceneY, scale: sceneScale }}
-          className="relative h-full w-full"
+    <>
+      {/* Mobile: normal vertical scroll */}
+      <section className="relative md:hidden bg-black px-6 py-16">
+        <motion.h2
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="text-3xl font-bold tracking-tight text-center mb-10"
+          style={{ fontFamily: 'var(--font-source-code-pro)' }}
         >
+          experience
+        </motion.h2>
+
+        <div className="space-y-6">
           {experiences.map((exp, i) => (
-            <Card 
-              key={i} 
-              exp={exp} 
-              index={i} 
-              total={experiences.length} 
-              scrollYProgress={smoothProgress} 
-            />
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-10% 0px -10% 0px" }}
+              transition={{ duration: 0.5, delay: i * 0.05 }}
+              className="w-full"
+            >
+              <div className="w-full [perspective:1200px]">
+                <div className="exp-card-3d w-full rounded-2xl overflow-hidden bg-[#050505] border border-white/10">
+                  <div className="relative aspect-[16/10] overflow-hidden">
+                    <Image
+                      src={exp.image}
+                      alt={exp.company}
+                      fill
+                      className="object-cover opacity-30"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/50 to-transparent" />
+
+                    <div className="absolute bottom-4 left-4 right-4 flex items-end gap-3">
+                      <div className="w-12 h-12 relative bg-black/40 backdrop-blur-md rounded-xl border border-white/10 p-2 shadow-2xl">
+                        <Image
+                          src={exp.image}
+                          alt={exp.company}
+                          fill
+                          className={`object-contain p-1.5 ${exp.roundedLogo ? 'rounded-md' : ''}`}
+                        />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-primary font-bold text-[10px] uppercase tracking-[0.25em] opacity-60">
+                          experience 0{i + 1}
+                        </p>
+                        <h3 className="text-xl font-bold text-white tracking-tight truncate">
+                          {exp.company}
+                        </h3>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="p-5">
+                    <div className="mb-3">
+                      <h4 className="text-base font-bold text-white/90 leading-tight">
+                        {exp.title}
+                      </h4>
+                      <div className="mt-2 w-10 h-0.5 bg-primary/30 rounded-full" />
+                    </div>
+
+                    <p className="text-muted-foreground text-sm leading-relaxed">
+                      {exp.description}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
           ))}
-        </motion.div>
-      </div>
-    </section>
+        </div>
+      </section>
+
+      {/* Desktop: sticky sliding strip */}
+      <section ref={containerRef} className="relative hidden md:block h-[700vh] bg-black px-6 md:px-10">
+        <div className="sticky top-0 h-screen w-full overflow-hidden">
+          <motion.div
+            style={{ opacity: sceneOpacity, y: sceneY, scale: sceneScale }}
+            className="relative h-full w-full"
+          >
+            {experiences.map((exp, i) => (
+              <Card 
+                key={i} 
+                exp={exp} 
+                index={i} 
+                total={experiences.length} 
+                scrollYProgress={smoothProgress} 
+              />
+            ))}
+          </motion.div>
+        </div>
+      </section>
+    </>
   )
 }
 
