@@ -64,17 +64,31 @@ export function ExperienceSection() {
             <div className="p-6 rounded-2xl bg-black/60 backdrop-blur-md border border-white/10 hover:border-white/20 transition-all duration-300 shadow-xl hover:shadow-2xl">
               <div className="flex items-center gap-4 mb-3">
                 <div className="w-12 h-12 relative flex-shrink-0">
+                  <Image src="/kalshi.png" alt="Kalshi" fill className="object-contain" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-semibold">Engineer</h3>
+                  <p className="text-sm text-primary">Kalshi</p>
+                </div>
+              </div>
+              <p className="text-sm text-muted-foreground">Building features for the world&apos;s first regulated prediction market exchange.</p>
+            </div>
+          </ScrollReveal>
+          <ScrollReveal animation="slideInRight" delay={250}>
+            <div className="p-6 rounded-2xl bg-black/60 backdrop-blur-md border border-white/10 hover:border-white/20 transition-all duration-300 shadow-xl hover:shadow-2xl">
+              <div className="flex items-center gap-4 mb-3">
+                <div className="w-12 h-12 relative flex-shrink-0">
                   <Image src="/icon.png" alt="Stealth Startup" fill className="object-contain" />
                 </div>
                 <div>
                   <h3 className="text-xl font-semibold">Founding Engineer #4</h3>
-                  <p className="text-sm text-primary">-</p>
+                  <p className="text-sm text-primary">icon.com</p>
                 </div>
               </div>
               <p className="text-sm text-muted-foreground">Founders Fund, 10M+ ARR</p>
             </div>
           </ScrollReveal>
-          <ScrollReveal animation="slideInRight" delay={250}>
+          <ScrollReveal animation="slideInLeft" delay={300}>
             <div className="p-6 rounded-2xl bg-black/60 backdrop-blur-md border border-white/10 hover:border-white/20 transition-all duration-300 shadow-xl hover:shadow-2xl">
               <div className="flex items-center gap-4 mb-3">
                 <div className="w-12 h-12 relative flex-shrink-0">
