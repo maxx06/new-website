@@ -58,17 +58,19 @@ export function ExperienceSection() {
   });
 
   return (
-    <section ref={containerRef} className="relative h-[700vh] bg-black">
-      <div className="sticky top-0 h-screen w-full flex overflow-hidden">
-        {experiences.map((exp, i) => (
-          <Card 
-            key={i} 
-            exp={exp} 
-            index={i} 
-            total={experiences.length} 
-            scrollYProgress={smoothProgress} 
-          />
-        ))}
+    <section ref={containerRef} className="relative h-[700vh] bg-black px-6 md:px-10">
+      <div className="sticky top-0 h-screen w-full overflow-hidden">
+        <div className="relative h-full w-full">
+          {experiences.map((exp, i) => (
+            <Card 
+              key={i} 
+              exp={exp} 
+              index={i} 
+              total={experiences.length} 
+              scrollYProgress={smoothProgress} 
+            />
+          ))}
+        </div>
       </div>
     </section>
   )
@@ -82,7 +84,7 @@ interface ExperienceCardProps {
 }
 
 function Card({ exp, index, total, scrollYProgress }: ExperienceCardProps) {
-  const widthVw = 100 / total;
+  const widthPct = 100 / total;
   const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
   const smoothstep = (t: number) => t * t * (3 - 2 * t);
 
@@ -96,28 +98,29 @@ function Card({ exp, index, total, scrollYProgress }: ExperienceCardProps) {
     return 1 + (total - 1) * t;
   });
 
-  // Left edge (in vw) of the centered strip
-  const stripLeft = useTransform(stripCount, (c) => 50 - (c * widthVw) / 2);
+  // Left edge (in %) of the centered strip within the padded container
+  const stripLeft = useTransform(stripCount, (c) => 50 - (c * widthPct) / 2);
 
-  // Where this card should end up at the current strip size
-  const targetXNum = useTransform(stripLeft, (left) => left + index * widthVw);
-  const prevXNum = useTransform(stripLeft, (left) => left + Math.max(0, index - 1) * widthVw);
+  // Where this card should end up at the current strip size (as LEFT%, not transform%)
+  const targetLeftNum = useTransform(stripLeft, (left) => left + index * widthPct);
+  const prevLeftNum = useTransform(stripLeft, (left) => left + Math.max(0, index - 1) * widthPct);
 
   // Each non-zero index card reveals when stripCount crosses its index.
   const localReveal = useTransform(stripCount, (c) => clamp01(c - index));
   const easedReveal = useTransform(localReveal, (t) => smoothstep(t));
   const cardOpacity = useTransform(localReveal, [0, 0.02, 1], [0, 1, 1]);
+  const pointerEvents = useTransform(localReveal, (t) => (t > 0.02 ? 'auto' : 'none'));
 
   // Slide in from *under the previous card* (same x as previous, lower z-index),
   // then peel to the right into its own slot.
   // Use vw math so landing is exact and Kalshi keeps shifting as the strip grows.
-  const x = useTransform([easedReveal, prevXNum, targetXNum], ([e, px, tx]) => {
-    const xVw = px * (1 - e) + tx * e;
-    return `${xVw}vw`;
+  const leftPos = useTransform([easedReveal, prevLeftNum, targetLeftNum], ([e, pl, tl]) => {
+    const lp = pl * (1 - e) + tl * e;
+    return `${lp}%`;
   });
 
   // Kalshi always participates in the strip centering (it’s card 0).
-  const kalshiX = useTransform(stripLeft, (left) => `${left}vw`);
+  const kalshiLeft = useTransform(stripLeft, (left) => `${left}%`);
 
   return (
     <motion.div 
@@ -125,16 +128,17 @@ function Card({ exp, index, total, scrollYProgress }: ExperienceCardProps) {
         position: 'absolute',
         top: 0,
         bottom: 0,
-        left: 0,
-        width: `${widthVw}vw`,
-        x: index === 0 ? kalshiX : x,
+        width: `${widthPct}%`,
+        left: index === 0 ? kalshiLeft : leftPos,
         opacity: index === 0 ? 1 : cardOpacity,
         zIndex: total - index,
+        pointerEvents: index === 0 ? 'auto' : pointerEvents,
       }}
       aria-hidden={index === 0 ? undefined : true}
-      className={`h-full border-r border-white/5 last:border-r-0 overflow-hidden ${index === 0 ? '' : 'pointer-events-none'}`}
+      className="h-full border-r border-white/5 last:border-r-0"
     >
-      <div className="h-full w-full bg-[#050505] flex flex-col relative overflow-hidden group">
+      <div className="h-full w-full [perspective:1200px]">
+        <div className="exp-card-3d group h-full w-full bg-[#050505] flex flex-col relative overflow-hidden">
         {/* Top Image Section - 50% height */}
         <div className="relative h-[50%] w-full overflow-hidden flex-shrink-0">
           <Image
@@ -181,6 +185,7 @@ function Card({ exp, index, total, scrollYProgress }: ExperienceCardProps) {
             <div className="w-1 h-1 rounded-full bg-primary/50 group-hover:bg-primary transition-all" />
           </div>
         </div>
+      </div>
       </div>
     </motion.div>
   )
