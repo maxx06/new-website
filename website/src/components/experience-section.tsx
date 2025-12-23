@@ -44,7 +44,9 @@ const experiences = [
   }
 ];
 
-const techIcons = [
+type TechIcon = { src: string; alt: string; invert?: boolean }
+
+const techIcons: TechIcon[] = [
   { src: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg", alt: "Python" },
   { src: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg", alt: "TypeScript" },
   { src: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg", alt: "JavaScript" },
@@ -85,9 +87,9 @@ export function ExperienceSection() {
   const techBarOpacity = useTransform(smoothProgress, [0, 0.03], [0, 1]);
 
   return (
-    <>
+    <div id="experience" className="scroll-mt-24">
       {/* Mobile: normal vertical scroll */}
-      <section className="relative md:hidden bg-black px-6 py-16">
+      <section className="relative md:hidden bg-black px-6 pt-24 pb-16">
         <motion.h2
           initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -104,7 +106,7 @@ export function ExperienceSection() {
           whileInView={{ y: 0, opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="sticky top-4 z-30"
+          className="sticky top-20 z-30"
         >
           <div className="rounded-2xl border border-white/10 bg-black/60 backdrop-blur-xl shadow-2xl px-4 py-3">
             <div className="flex items-center gap-3 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
@@ -180,14 +182,19 @@ export function ExperienceSection() {
             </motion.div>
           ))}
         </div>
+
+        {/* Navbar target on mobile: near the end of experience */}
+        <div id="experience-view-mobile" className="scroll-mt-24" />
       </section>
 
       {/* Desktop: sticky sliding strip */}
       <section ref={containerRef} className="relative hidden md:block h-[700vh] bg-black px-6 md:px-10">
-        <div className="sticky top-0 h-screen w-full overflow-hidden">
+        {/* Navbar target on desktop: slightly above the end (so you don't overshoot) */}
+        <div id="experience-view-desktop" className="absolute left-0 top-[560vh] scroll-mt-24" />
+        <div className="sticky top-0 h-screen w-full overflow-hidden pt-20">
           <motion.div
             style={{ y: techBarY, opacity: techBarOpacity }}
-            className="absolute left-0 right-0 top-4 z-30"
+            className="absolute left-0 right-0 top-20 z-30"
           >
             <div className="rounded-2xl border border-white/10 bg-black/60 backdrop-blur-xl shadow-2xl px-5 py-3">
               <div className="flex items-center justify-between gap-6">
@@ -226,7 +233,10 @@ export function ExperienceSection() {
           </motion.div>
         </div>
       </section>
-    </>
+
+      {/* Anchor for navbar: jump to the end of the experience section */}
+      <div id="experience-end" className="scroll-mt-24" />
+    </div>
   )
 }
 
@@ -247,7 +257,7 @@ function Card({ exp, index, total, scrollYProgress }: ExperienceCardProps) {
   // - As you scroll: stripCount increases towards `total`, and the strip shifts left to stay centered.
   // This naturally makes Kalshi slide left "one slot" each time a new card joins the strip.
   const revealEnd = 0.6; // faster reveal; leaves tail scroll after fully revealed
-  const stripCount = useTransform(scrollYProgress, (p) => {
+  const stripCount = useTransform(scrollYProgress, (p: number) => {
     const t = clamp01(p / revealEnd);
     return 1 + (total - 1) * t;
   });
@@ -268,10 +278,14 @@ function Card({ exp, index, total, scrollYProgress }: ExperienceCardProps) {
   // Slide in from *under the previous card* (same x as previous, lower z-index),
   // then peel to the right into its own slot.
   // Use vw math so landing is exact and Kalshi keeps shifting as the strip grows.
-  const leftPos = useTransform([easedReveal, prevLeftNum, targetLeftNum], ([e, pl, tl]) => {
-    const lp = pl * (1 - e) + tl * e;
-    return `${lp}%`;
-  });
+  const leftPos = useTransform(
+    [easedReveal, prevLeftNum, targetLeftNum],
+    (vals: number[]) => {
+      const [e, pl, tl] = vals as [number, number, number]
+      const lp = pl * (1 - e) + tl * e
+      return `${lp}%`
+    }
+  );
 
   // Kalshi always participates in the strip centering (it’s card 0).
   const kalshiLeft = useTransform(stripLeft, (left) => `${left}%`);

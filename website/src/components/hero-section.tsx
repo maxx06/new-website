@@ -16,7 +16,7 @@ export function HeroSection() {
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
-      <section className="pt-20 pb-20 px-8 relative z-10 overflow-hidden">
+      <section id="home" className="pt-20 pb-20 px-8 relative z-10 overflow-hidden scroll-mt-24">
         {/* Background Image - Only for Hero */}
         <div className="absolute inset-0 z-0 w-full overflow-hidden">
           <Image

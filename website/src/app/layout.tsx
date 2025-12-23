@@ -4,6 +4,7 @@ import "./globals.css";
 import { SidebarProvider } from "@/contexts/sidebar-context";
 import { ChatOverlay } from "@/components/chat-overlay";
 import { SmoothCursor } from "@/components/magicui/smooth-cursor";
+import { Navbar } from "@/components/navbar";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -51,6 +52,7 @@ export default function RootLayout({
       >
         <SidebarProvider>
           <SmoothCursor />
+          <Navbar />
           {children}
           <ChatOverlay />
         </SidebarProvider>

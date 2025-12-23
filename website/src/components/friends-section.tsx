@@ -19,8 +19,8 @@ const friends = [
 
 export function FriendsSection() {
   return (
-    <section className="px-8 pb-20 relative z-10">
-      <div className="container mx-auto max-w-6xl">
+    <section id="friends" className="px-6 md:px-10 pb-20 relative z-10 scroll-mt-24">
+      <div className="w-full">
         <div className="text-center text-gray-400 text-sm">
           <span>cool people &gt; </span>
           {friends.map((friend, index) => (
