@@ -5,6 +5,7 @@ import { SidebarProvider } from "@/contexts/sidebar-context";
 import { ChatOverlay } from "@/components/chat-overlay";
 import { SmoothCursor } from "@/components/magicui/smooth-cursor";
 import { Navbar } from "@/components/navbar";
+import { Analytics } from "@vercel/analytics/next";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -56,6 +57,7 @@ export default function RootLayout({
           {children}
           <ChatOverlay />
         </SidebarProvider>
+        <Analytics />
       </body>
     </html>
   );
