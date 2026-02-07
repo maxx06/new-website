@@ -2,16 +2,19 @@
 
 import Link from "next/link"
 import { useEffect, useState } from "react"
+import { usePathname } from "next/navigation"
 
 const links = [
-  { label: "home", href: "#home" },
-  { label: "experience", href: "#experience" },
-  { label: "projects", href: "#projects" },
+  { label: "home", href: "/#home" },
+  { label: "experience", href: "/#experience" },
+  { label: "projects", href: "/#projects" },
+  { label: "photography", href: "/photography" },
 ]
 
 export function Navbar() {
   const [openMobile, setOpenMobile] = useState(false)
   const [isHeroVisible, setIsHeroVisible] = useState(true)
+  const pathname = usePathname()
 
   useEffect(() => {
     const el = document.getElementById("home")
@@ -19,6 +22,11 @@ export function Navbar() {
       setIsHeroVisible(false)
       return
     }
+
+    // Check initial visibility immediately
+    const rect = el.getBoundingClientRect()
+    const isInitiallyVisible = rect.top < window.innerHeight && rect.bottom > 0
+    setIsHeroVisible(isInitiallyVisible)
 
     const obs = new IntersectionObserver(
       (entries) => {
@@ -35,9 +43,15 @@ export function Navbar() {
 
     obs.observe(el)
     return () => obs.disconnect()
-  }, [])
+  }, [pathname])
 
-  const scrollToExperienceView = () => {
+  const scrollToExperienceView = (e: React.MouseEvent) => {
+    // If not on home page, navigate there first
+    if (pathname !== "/") {
+      return // Let the Link handle navigation
+    }
+
+    e.preventDefault()
     const isDesktop = window.matchMedia("(min-width: 768px)").matches
     const targetId = isDesktop ? "experience-view-desktop" : "experience-view-mobile"
     const el = document.getElementById(targetId)
@@ -54,7 +68,7 @@ export function Navbar() {
       <div className="bg-black/40 backdrop-blur-xl border-b border-white/10">
         <div className="px-6 md:px-10 h-16 flex items-center justify-between">
           <Link
-            href="#home"
+            href="/"
             className="font-semibold tracking-tight hover:opacity-80 transition-opacity"
             style={{ fontFamily: "var(--font-source-code-pro)" }}
           >
@@ -64,14 +78,14 @@ export function Navbar() {
           <nav className="hidden md:flex items-center gap-6 text-sm text-white/70">
             {links.map((l) =>
               l.label === "experience" ? (
-                <button
+                <Link
                   key={l.label}
-                  type="button"
+                  href={l.href}
                   onClick={scrollToExperienceView}
                   className="hover:text-white transition-colors"
                 >
                   {l.label}
-                </button>
+                </Link>
               ) : (
                 <Link
                   key={l.href}
@@ -102,14 +116,14 @@ export function Navbar() {
             <div className="pt-2 flex flex-col gap-2 text-sm text-white/80">
               {links.map((l) =>
                 l.label === "experience" ? (
-                  <button
+                  <Link
                     key={l.label}
-                    type="button"
+                    href={l.href}
                     onClick={scrollToExperienceView}
-                    className="py-2 text-left"
+                    className="py-2"
                   >
                     {l.label}
-                  </button>
+                  </Link>
                 ) : (
                   <Link
                     key={l.href}
